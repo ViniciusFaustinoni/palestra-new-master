@@ -1,0 +1,2793 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IA de verdade · Vinícius Faustinoni</title>
+<style>
+/* ===========================================================
+   FONTES LOCAIS (funcionam sem internet no auditório)
+   =========================================================== */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/JetBrainsMono-400-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/JetBrainsMono-400-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(fonts/JetBrainsMono-600-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(fonts/JetBrainsMono-600-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/Manrope-400-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/Manrope-400-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(fonts/Manrope-600-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(fonts/Manrope-600-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url(fonts/Manrope-800-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url(fonts/Manrope-800-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Unbounded';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/Unbounded-400-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Unbounded';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/Unbounded-400-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Unbounded';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(fonts/Unbounded-700-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Unbounded';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(fonts/Unbounded-700-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Unbounded';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url(fonts/Unbounded-900-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Unbounded';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url(fonts/Unbounded-900-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* ===========================================================
+   PALCO FIXO 2304×768 — painel do auditório (3:1)
+   Tudo é desenhado em 2304×768 e escalado inteiro para a janela.
+   =========================================================== */
+html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#000}
+.deck-viewport{position:fixed;inset:0;overflow:hidden;background:#000}
+.deck-stage{position:absolute;left:0;top:0;width:2304px;height:768px;overflow:hidden;transform-origin:0 0;background:var(--bg)}
+.slide{position:absolute;inset:0;width:2304px;height:768px;overflow:hidden;display:block;visibility:hidden;opacity:0;pointer-events:none;background:var(--bg);transition:opacity .45s ease,visibility 0s linear .45s}
+.slide.active{visibility:visible;opacity:1;pointer-events:auto;z-index:1;transition:opacity .45s ease}
+img,video,canvas,svg{max-width:100%;max-height:100%}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.2s!important}}
+
+/* ===========================================================
+   TOKENS — visual do site vinicius.faustinoni.com
+   =========================================================== */
+:root{
+  --bg:#050505; --ink:#F2F5F4; --muted:#7C8784; --dim:#3C4543;
+  --teal:#1ABC9C; --teal-2:#48D6B8; --teal-dim:rgba(26,188,156,.14); --teal-line:rgba(26,188,156,.45);
+  --card:#0C1110; --card-2:#101817; --line:rgba(255,255,255,.07);
+  --warn:#F5B84B; --bad:#FF6B5B;
+  --f-display:'Unbounded',sans-serif; --f-body:'Manrope',sans-serif; --f-mono:'JetBrains Mono',monospace;
+  --pad-x:150px;
+}
+
+/* ===========================================================
+   ATMOSFERA — grade fina + brilho verde-água
+   =========================================================== */
+.slide::before{content:"";position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:96px 96px;-webkit-mask-image:radial-gradient(ellipse 70% 90% at 50% 50%,#000 30%,transparent 80%);mask-image:radial-gradient(ellipse 70% 90% at 50% 50%,#000 30%,transparent 80%);opacity:.6}
+.slide.plain::before{display:none}
+.glow{position:absolute;width:900px;height:900px;border-radius:50%;background:radial-gradient(circle,rgba(26,188,156,.22),transparent 65%);filter:blur(20px);pointer-events:none}
+.glow.g-tl{left:-250px;top:-380px}.glow.g-tr{right:-250px;top:-380px}
+.glow.g-bl{left:-250px;bottom:-420px}.glow.g-br{right:-250px;bottom:-420px}
+.glow.g-c{left:calc(50% - 450px);top:-300px}
+
+/* ===========================================================
+   CROMO — rótulos pequenos nos cantos (gerados pelo JS a partir de
+   data-section / data-tag no <section>)
+   =========================================================== */
+.chrome{position:absolute;font:600 18px/1 var(--f-mono);letter-spacing:.18em;text-transform:uppercase;color:var(--muted);z-index:2}
+.chrome b{color:var(--teal);font-weight:600}
+.chrome.tl{left:var(--pad-x);top:64px}.chrome.tr{right:var(--pad-x);top:64px}
+.chrome.bl{left:var(--pad-x);bottom:52px}.chrome.br{right:var(--pad-x);bottom:52px}
+
+/* ===========================================================
+   ÁREA ÚTIL — .frame ocupa o miolo do palco (2004×528)
+   =========================================================== */
+.frame{position:absolute;left:var(--pad-x);right:var(--pad-x);top:124px;bottom:116px;display:flex;z-index:1}
+
+/* ===========================================================
+   TIPOGRAFIA
+   =========================================================== */
+.h-xxl,.h-xl,.h-l,.h-m,.h-s{font-family:var(--f-display);font-weight:900;letter-spacing:-.045em;line-height:.92;color:var(--ink);margin:0}
+.h-xxl{font-size:220px}.h-xl{font-size:164px}.h-l{font-size:116px;letter-spacing:-.04em}.h-m{font-size:80px;letter-spacing:-.035em;line-height:1}.h-s{font-size:56px;font-weight:700;letter-spacing:-.02em;line-height:1.08}
+.teal{color:var(--teal)!important}.muted{color:var(--muted)!important}.warn{color:var(--warn)!important}.bad{color:var(--bad)!important}
+.sub{font:400 34px/1.35 var(--f-body);color:var(--muted);margin:22px 0 0}
+.sub b{color:var(--ink);font-weight:800}
+.kicker{font:600 22px/1 var(--f-mono);letter-spacing:.2em;text-transform:uppercase;color:var(--teal);margin:0 0 26px}
+.strike{text-decoration:line-through;text-decoration-thickness:.08em;text-decoration-color:var(--bad)}
+.mark{background:linear-gradient(transparent 62%,rgba(26,188,156,.35) 62%)}
+
+/* ===========================================================
+   ÍCONES — <svg class="ic"><use href="#i-clock"/></svg>
+   =========================================================== */
+.ic{width:1em;height:1em;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.ic-circle{width:200px;height:200px;border-radius:50%;background:var(--teal-dim);border:2px solid var(--teal-line);display:grid;place-items:center;color:var(--teal);font-size:104px;flex:none}
+.ic-circle.lg{width:320px;height:320px;font-size:160px}
+.ic-circle.sm{width:130px;height:130px;font-size:66px}
+.ic-circle.ghost{background:transparent;border-color:var(--dim);color:var(--muted)}
+
+/* ===========================================================
+   LAYOUT: .l-stmt — frase gigante (1 a 3 palavras por linha)
+   =========================================================== */
+.l-stmt{flex-direction:column;justify-content:center}
+.l-stmt.center{align-items:center;text-align:center}
+
+/* ===========================================================
+   LAYOUT: .l-split — texto à esquerda + visual à direita
+   =========================================================== */
+.l-split{align-items:center;gap:90px}
+.l-split > .txt{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;justify-content:center}
+.l-split > .vis{flex:none;display:flex;align-items:center;justify-content:center;gap:40px}
+.l-split.rev{flex-direction:row-reverse}
+
+/* ===========================================================
+   LAYOUT: .l-flow — recebe → faz → devolve (3 ou 4 etapas)
+   =========================================================== */
+.l-flow{align-items:center;justify-content:space-between}
+.l-flow .step{display:flex;align-items:center;gap:36px;flex:1 1 0;min-width:0}
+.l-flow .step .lbl{font:900 50px/1.02 var(--f-display);letter-spacing:-.03em;color:var(--ink)}
+.l-flow .step .lbl small{display:block;margin-top:14px;font:400 28px/1.3 var(--f-body);letter-spacing:0;color:var(--muted)}
+.l-flow .arrow{flex:none;width:120px;display:flex;justify-content:center;color:var(--teal);font-size:72px}
+.l-flow.stack .step{flex-direction:column;text-align:center;gap:28px}
+
+/* ===========================================================
+   LAYOUT: .l-cards — 2 a 5 cartões lado a lado
+   =========================================================== */
+.l-cards{align-items:stretch;gap:36px}
+.card{flex:1 1 0;min-width:0;background:linear-gradient(180deg,var(--card-2),var(--card));border:1.5px solid var(--line);border-radius:28px;padding:40px 44px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden}
+.card.hi{border-color:var(--teal);box-shadow:0 0 0 1px var(--teal) inset,0 0 90px rgba(26,188,156,.18)}
+.card.dim{opacity:.45}
+.card .c-top{font:600 20px/1 var(--f-mono);letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.card.hi .c-top{color:var(--teal)}
+.card .c-big{font:900 68px/1 var(--f-display);letter-spacing:-.04em;color:var(--ink);margin-top:18px;white-space:nowrap}
+.card .c-big small{font-size:.42em;letter-spacing:-.01em;color:var(--muted)}
+.card .c-sub{font:400 28px/1.3 var(--f-body);color:var(--muted);margin-top:18px}
+.card .c-sub b{color:var(--ink)}
+.card .c-ic{font-size:72px;color:var(--teal)}
+.card .badge{position:absolute;top:30px;right:30px;font:600 17px/1 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:#04120F;background:var(--teal);padding:10px 14px;border-radius:999px}
+
+/* ===========================================================
+   LAYOUT: .l-search — cartão "Pesquise" (número da busca é automático)
+   =========================================================== */
+.l-search{align-items:center;gap:90px}
+.l-search .lupa{width:320px;height:320px;border-radius:50%;background:var(--teal-dim);border:2px solid var(--teal-line);display:grid;place-items:center;color:var(--teal);font-size:160px;flex:none}
+.l-search .qs{flex:1;display:flex;flex-direction:column;gap:26px;min-width:0}
+.q-label{font:600 24px/1 var(--f-mono);letter-spacing:.2em;text-transform:uppercase;color:var(--teal)}
+.q-box{height:150px;border-radius:75px;background:#0E1413;border:2px solid var(--teal-line);display:flex;align-items:center;padding:0 64px;box-sizing:border-box;font:700 62px/1 var(--f-body);color:var(--ink);white-space:nowrap;overflow:hidden}
+.q-box + .q-box{height:118px;font-size:46px;border-color:var(--dim)}
+.q-box .caret{display:inline-block;width:5px;height:.95em;background:var(--teal);margin-left:10px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.q-foot{font:400 30px/1.3 var(--f-body);color:var(--muted)}
+.q-foot b{color:var(--ink)}
+
+/* ===========================================================
+   LAYOUT: .l-quote — frase-chave (até ~14 palavras)
+   =========================================================== */
+.l-quote{flex-direction:column;justify-content:center;padding-left:120px}
+.l-quote::before{content:"\201C";position:absolute;left:-16px;top:-40px;font:900 300px/1 var(--f-display);color:var(--teal);opacity:.9}
+.l-quote .q{font:700 72px/1.12 var(--f-display);letter-spacing:-.03em;color:var(--ink);margin:0;max-width:1850px}
+.l-quote .q em{font-style:normal;color:var(--teal)}
+.l-quote .who{font:600 24px/1 var(--f-mono);letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-top:40px}
+
+/* ===========================================================
+   LAYOUT: .l-shots — prints/imagens em moldura
+   =========================================================== */
+.l-shots{align-items:center;justify-content:center;gap:48px}
+.shot{margin:0;display:flex;flex-direction:column;align-items:center;gap:18px;min-width:0}
+.shot img{display:block;height:440px;width:auto;max-width:100%;border-radius:18px;border:1.5px solid var(--line);box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 0 1px rgba(26,188,156,.08)}
+.shot.tall img{height:528px}
+.shot.short img{height:360px}
+.shot figcaption{font:600 22px/1 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.shot.hi img{border-color:var(--teal);box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 60px rgba(26,188,156,.25)}
+.photo{height:640px;width:auto;border-radius:24px;object-fit:cover;box-shadow:0 30px 90px rgba(0,0,0,.7)}
+
+/* ===========================================================
+   LEMBRETE (.cue) — frase curta, na voz do Vinícius, que lembra o que
+   falar no slide. Preferir .sub dentro da coluna de texto; .cue é o
+   rodapé para slides SEM coluna de texto (cartões, prints, mosaico, fluxo).
+   Não usar .cue em slide com data-station (lá o trilho ocupa o rodapé).
+   =========================================================== */
+.cue{position:absolute;left:var(--pad-x);right:var(--pad-x);bottom:44px;font:400 30px/1.3 var(--f-body);color:var(--muted);z-index:2}
+.cue b{color:var(--ink);font-weight:800}
+
+/* "Em corretorês": tradução de termo técnico (23/10), em verde-água */
+.trad{display:flex;align-items:baseline;gap:20px;margin-top:30px;padding:12px 0 12px 24px;border-left:3px solid var(--teal);max-width:1320px}
+.trad .lbl{flex:none;font:600 18px/1 var(--f-mono);letter-spacing:.18em;text-transform:uppercase;color:var(--teal)}
+.trad .fato{font:400 30px/1.35 var(--f-body);color:var(--ink)}
+.trad .fato b{color:var(--teal-2);font-weight:800}
+.trad.bar{position:absolute;left:var(--pad-x);right:var(--pad-x);bottom:36px;margin:0;z-index:2}
+/* Conversa de exemplo (23/10): .chat > .ch-top + .msg.eu / .msg.ele */
+.chat{width:940px;display:flex;flex-direction:column;gap:16px;padding:26px 32px 30px;background:linear-gradient(180deg,var(--card-2),var(--card));border:1.5px solid var(--line);border-radius:30px}
+.chat .ch-top{display:flex;align-items:center;gap:14px;font:600 18px/1 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--muted);padding-bottom:14px;border-bottom:1px solid var(--line)}
+.chat .ch-top .ic{font-size:28px;color:var(--teal)}
+.msg{max-width:84%;padding:14px 22px;border-radius:22px;font:400 27px/1.32 var(--f-body);color:var(--ink)}
+.msg.eu{align-self:flex-end;background:var(--teal-dim);border:1px solid var(--teal-line);border-bottom-right-radius:6px}
+.msg.ele{align-self:flex-start;background:#141C1B;border:1px solid var(--line);border-bottom-left-radius:6px}
+.msg b{font-weight:800;color:var(--teal-2)}
+/* FUNDO DE VÍDEO (23/10): cena real, filme de transformação ou imagem atrás do slide.
+   O slide declara data-fundo="cena:e1" | "filme:f1" (toca f1 na ida e f1-re na volta) | "imagem:a1".
+   Arquivos em assets/cenas/ (nome.mp4 + nome.jpg = último quadro, usado parado e no PDF). */
+.fundo-deck{position:absolute;inset:0;z-index:0;pointer-events:none}
+.fundo-deck > video,.fundo-deck > img{position:absolute;top:0;right:0;width:1366px;height:768px;object-fit:cover;opacity:0;transition:opacity .6s ease;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 30%);mask-image:linear-gradient(90deg,transparent 0,#000 30%)}
+.fundo-deck > .on{opacity:1}
+.slide[data-fundo]{background:transparent}
+.slide[data-fundo] .frame{right:980px}
+.slide[data-fundo] .l-split > .vis{display:none}
+.slide[data-fundo] .ic-circle{display:none} /* o vídeo já é o desenho do slide */
+.slide[data-fundo] .l-act .act-t{font-size:140px} /* abertura de capítulo com cena: o título cabe na metade esquerda */
+.slide[data-fundo] .l-stmt.center{align-items:flex-start;text-align:left}
+.slide[data-fundo] .l-stmt.center .sub{margin-left:0}
+/* MOTION GRAPHICS (23/10): partículas numa camada atrás dos slides (por isso o slide fica transparente na tela),
+   ícone grande desenhado por elas, números que contam e ícones de traço que se desenham. No PDF nada disso aparece. */
+@media screen{.slide{background:transparent}}
+.mg-canvas{position:absolute;inset:0;width:2304px;height:768px;pointer-events:none;transition:opacity .6s ease}
+.mg-canvas.off{opacity:0}
+.mg-ic{visibility:hidden}
+.mg-num{display:inline-block;text-align:right;font-variant-numeric:tabular-nums}
+.slide.active svg.ic{stroke-dasharray:160;animation:traca 1.4s cubic-bezier(.55,0,.25,1) backwards;animation-delay:calc(var(--d,0s) + .2s)}
+@keyframes traca{from{stroke-dashoffset:160}to{stroke-dashoffset:0}}
+/* filme de transformação: o texto entra quando a transformação está acabando */
+.slide[data-fundo^="filme"].active .r{animation-delay:calc(var(--d,0s) + .8s)}
+
+/* ===========================================================
+   SÓ NO TELÃO — .telao-only aparece na apresentação e no PDF de ensaio;
+   no PDF público (export_pdf.py --publico) some e entra o .pdf-only.
+   =========================================================== */
+.pdf-only{display:none!important}
+.montagem{position:relative;margin:0}
+.montagem img{display:block;height:528px;width:auto;border-radius:22px;box-shadow:0 30px 90px rgba(0,0,0,.7),0 0 0 1.5px rgba(231,183,90,.5)}
+.montagem figcaption{position:absolute;left:16px;bottom:16px;font:600 17px/1 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:#fff;background:rgba(0,0,0,.62);padding:9px 12px;border-radius:8px}
+
+/* ===========================================================
+   LAYOUT: .l-number — número gigante + legenda
+   =========================================================== */
+.l-number{align-items:center;gap:80px}
+.l-number .num{font:900 250px/.9 var(--f-display);letter-spacing:-.06em;color:var(--teal);white-space:nowrap}
+.l-number .num small{font-size:.4em;letter-spacing:-.02em}
+.l-number .num-label{font:700 60px/1.1 var(--f-display);letter-spacing:-.03em;color:var(--ink)}
+.l-number .num-label small{display:block;margin-top:18px;font:400 30px/1.35 var(--f-body);letter-spacing:0;color:var(--muted)}
+
+/* ===========================================================
+   LAYOUT: .l-timeline — trilho horizontal (eras, etapas)
+   =========================================================== */
+.l-timeline{flex-direction:column;justify-content:center;gap:0}
+.tline{position:relative;display:flex;justify-content:space-between;padding-top:40px}
+.tline::before{content:"";position:absolute;left:0;right:0;top:71px;height:3px;background:var(--dim)}
+.tline-item{position:relative;flex:1 1 0;display:flex;flex-direction:column;align-items:center;text-align:center;gap:22px;min-width:0}
+.tline-item .dot{width:64px;height:64px;border-radius:50%;background:var(--bg);border:3px solid var(--dim);z-index:1;display:grid;place-items:center;color:var(--muted);font-size:32px;box-sizing:border-box}
+.tline-item .t1{font:600 22px/1 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.tline-item .t2{font:900 60px/1.02 var(--f-display);letter-spacing:-.03em;color:var(--dim)}
+.tline-item .t3{font:400 28px/1.3 var(--f-body);color:var(--muted);max-width:440px}
+.tline-item.past .dot{border-color:var(--teal-line);background:var(--teal-dim)}
+.tline-item.past .t2{color:var(--muted)}
+.tline-item.on .dot{border-color:var(--teal);background:var(--teal);color:#04120F;box-shadow:0 0 40px rgba(26,188,156,.6)}
+.tline-item.on .t1{color:var(--teal)}.tline-item.on .t2{color:var(--ink)}
+
+/* ===========================================================
+   LAYOUT: .l-mosaic — grade de "marcas" (sistemas, logos)
+   =========================================================== */
+.l-mosaic{display:grid;grid-template-columns:repeat(var(--cols,5),minmax(0,1fr));grid-auto-rows:1fr;gap:24px;align-content:center}
+.tile{background:var(--card);border:1.5px solid var(--line);border-radius:22px;display:flex;align-items:center;justify-content:center;gap:20px;padding:0 24px;min-height:0;font:700 40px/1 var(--f-display);letter-spacing:-.02em;color:var(--muted);text-align:center}
+.tile .ic{font-size:44px;color:var(--dim)}
+.tile.hi{border-color:var(--teal);color:var(--ink);background:linear-gradient(180deg,#0E1B18,var(--card));box-shadow:0 0 50px rgba(26,188,156,.2)}
+.tile.hi .ic{color:var(--teal)}
+.tile img{max-height:70%;max-width:80%;object-fit:contain}
+.tile.logo{background:#F4F6F5}
+
+/* ===========================================================
+   LAYOUT: .l-versus — antes × depois
+   =========================================================== */
+.l-versus{align-items:stretch;gap:0}
+.l-versus .vs{flex:1 1 0;min-width:0;border-radius:28px;padding:40px 48px;display:flex;flex-direction:column;gap:22px;overflow:hidden}
+.l-versus .vs.a{background:var(--card);border:1.5px solid var(--line)}
+.l-versus .vs.b{background:linear-gradient(180deg,#0E1B18,var(--card));border:1.5px solid var(--teal);box-shadow:0 0 70px rgba(26,188,156,.16)}
+.l-versus .vs-top{font:600 22px/1 var(--f-mono);letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.l-versus .vs.b .vs-top{color:var(--teal)}
+.l-versus .wall{font:400 22px/1.45 var(--f-mono);color:var(--dim)}
+.l-versus .one{font:700 64px/1.12 var(--f-display);letter-spacing:-.03em;color:var(--ink);margin:auto 0}
+.l-versus .vs-mid{flex:none;width:130px;display:flex;align-items:center;justify-content:center;font:900 70px/1 var(--f-display);color:var(--teal)}
+
+/* ===========================================================
+   LAYOUT: .l-wall — seta para um lado da sala (sem uso no deck da New Master)
+   O lado é global: DECK.wallSide ('left' | 'right')
+   =========================================================== */
+.l-wall{align-items:center;gap:80px}
+.wall-arrow{flex:none;width:320px;height:320px;border-radius:50%;border:2px solid var(--teal-line);display:grid;place-items:center;color:var(--teal);font-size:190px;background:var(--teal-dim)}
+.wall-arrow .ic{transition:transform .3s}
+body.wall-left .wall-arrow .ic{transform:rotate(180deg)}
+.slide.active .wall-arrow{animation:nudge 1.6s ease-in-out infinite}
+@keyframes nudge{50%{transform:translateX(calc(var(--wdir,1) * 24px))}}
+body.wall-left .wall-arrow{--wdir:-1}
+body.wall-left .l-wall{flex-direction:row}
+body.wall-right .l-wall{flex-direction:row-reverse}
+.l-wall .txt{flex:1;min-width:0}
+
+/* ===========================================================
+   DIVISOR DE ATO — slide de seção
+   =========================================================== */
+.l-act{flex-direction:column;justify-content:center}
+.l-act .act-n{font:600 26px/1 var(--f-mono);letter-spacing:.24em;text-transform:uppercase;color:var(--teal);margin-bottom:30px}
+.l-act .act-t{font:900 170px/.92 var(--f-display);letter-spacing:-.05em;color:var(--ink);margin:0}
+.l-act .act-bar{height:3px;background:var(--teal);width:0;margin-top:46px}
+.slide.active .l-act .act-bar{animation:grow 1.4s .3s cubic-bezier(.7,0,.2,1) forwards}
+@keyframes grow{to{width:100%}}
+
+/* ===========================================================
+   TRILHO DA TRAJETÓRIA — gerado de data-station="3/15"
+   =========================================================== */
+.track{position:absolute;left:var(--pad-x);right:var(--pad-x);bottom:58px;height:14px;display:flex;align-items:center;gap:0;z-index:2}
+.track::before{content:"";position:absolute;left:0;right:0;top:6px;height:2px;background:var(--dim)}
+.track i{position:relative;flex:1;display:flex;justify-content:center}
+.track i::after{content:"";width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--dim)}
+.track i.past::after{background:var(--teal-line);border-color:var(--teal-line)}
+.track i.on::after{width:18px;height:18px;background:var(--teal);border-color:var(--teal);box-shadow:0 0 22px var(--teal)}
+
+/* ===========================================================
+   ENTRADAS — qualquer elemento com .r entra em sequência
+   =========================================================== */
+.r{opacity:0;transform:translateY(26px)}
+.slide.active .r{animation:up .85s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:var(--d,0s)}
+@keyframes up{to{opacity:1;transform:none}}
+/* elementos "apagados" (.dim) terminam a entrada apagados */
+.slide.active .dim.r{animation-name:up-dim}
+@keyframes up-dim{to{opacity:.45;transform:none}}
+.r.pop{transform:scale(.85)}
+.r.left{transform:translateX(-40px)}
+
+/* Relógio (estação "5 horas") */
+.clock{position:relative;width:420px;height:420px;border-radius:50%;border:3px solid var(--teal-line);box-shadow:0 0 80px rgba(26,188,156,.18) inset;flex:none}
+.clock i{position:absolute;left:50%;top:50%;width:6px;background:var(--ink);border-radius:3px;transform-origin:50% 100%}
+.clock .h{height:110px;margin:-110px 0 0 -3px;transform:rotate(150deg)}
+.clock .m{height:160px;margin:-160px 0 0 -3px;background:var(--teal)}
+.slide.active .clock .m{animation:spin 6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ===========================================================
+   CONTROLES DE APRESENTAÇÃO (fora do design dos slides)
+   =========================================================== */
+.notes{display:none}
+.progress{display:none}
+.blackout{position:fixed;inset:0;background:#000;z-index:100;display:none}
+body.black .blackout{display:block}
+.goto{position:fixed;right:24px;bottom:18px;z-index:101;font:600 18px/1 var(--f-mono);color:var(--teal);background:#0008;padding:8px 12px;border-radius:8px;display:none}
+.help{position:fixed;inset:auto 24px 24px auto;z-index:102;background:#0C1110EE;border:1px solid var(--teal-line);border-radius:14px;padding:22px 26px;font:400 16px/1.7 var(--f-mono);color:var(--ink);display:none}
+body.show-help .help{display:block}
+.help b{color:var(--teal)}
+
+/* ===========================================================
+   MODO APRESENTADOR (janela separada, tecla P)
+   =========================================================== */
+body.presenter{overflow:auto;background:#0A0D0C;color:var(--ink);font-family:var(--f-body)}
+body.presenter .deck-viewport,body.presenter .progress{display:none}
+.pv{display:none}
+body.presenter .pv{display:grid;grid-template-columns:1fr 520px;grid-template-rows:auto auto 1fr;gap:18px 24px;padding:20px;height:100vh;box-sizing:border-box}
+.pv-cur,.pv-next{position:relative;overflow:hidden;border-radius:10px;border:1px solid #1E2826;background:#000}
+.pv-cur{grid-column:1;grid-row:1}
+.pv-side{grid-column:2;grid-row:1/3;display:flex;flex-direction:column;gap:14px}
+.pv-next{height:173px}
+.pv-mini{position:absolute;left:0;top:0;width:2304px;height:768px;transform-origin:0 0}
+.pv-mini .slide{visibility:visible;opacity:1}
+.pv-clock{font:700 64px/1 var(--f-mono);color:var(--teal)}
+.pv-meta{font:600 18px/1.5 var(--f-mono);color:var(--muted)}
+.pv-meta b{color:var(--ink)}
+.pv-notes{grid-column:1/3;grid-row:3;overflow:auto;font:400 26px/1.5 var(--f-body);color:var(--ink);background:#0F1413;border:1px solid #1E2826;border-radius:10px;padding:22px 28px}
+.pv-notes b,.pv-notes strong{color:var(--teal)}
+.pv-notes p{margin:0 0 .7em}
+.pv-title{grid-column:1;grid-row:2;font:700 22px/1.3 var(--f-display);color:var(--ink)}
+
+/* ===========================================================
+   IMPRESSÃO / PDF — um slide por página, 2304×768
+   =========================================================== */
+@page{size:2304px 768px;margin:0}
+@media print{
+  html,body{width:2304px;height:auto;overflow:visible;background:var(--bg)}
+  .deck-viewport{position:static;overflow:visible}
+  .deck-stage{position:static;width:auto;height:auto;transform:none!important}
+  .slide{position:relative;display:block!important;visibility:visible!important;opacity:1!important;width:2304px;height:768px;break-after:page;page-break-after:always;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .slide:last-child{break-after:auto;page-break-after:auto}
+  .r,.slide .r{opacity:1!important;transform:none!important;animation:none!important}
+  .dim.r{opacity:.45!important}
+  .l-act .act-bar{width:100%!important;animation:none!important}
+  .progress,.blackout,.goto,.help,.pv{display:none!important}
+  .glow{filter:none!important}
+  .slide::before{display:none!important}
+  .fundo-deck{display:none!important}
+  .mg-canvas{display:none!important}
+  .mg-ic{visibility:visible!important}
+  svg.ic,.slide.active svg.ic{animation:none!important;stroke-dasharray:none!important}
+  .slide[data-fundo]{background:linear-gradient(90deg,#050505 0,#050505 41%,rgba(5,5,5,0) 60%),var(--poster) right top/1366px 768px no-repeat,#050505!important}
+}
+</style>
+<meta name="robots" content="noindex, nofollow">
+<style>.pdf-only{display:flex!important}</style>
+</head>
+<body class="wall-left">
+
+<!-- ===========================================================
+     ÍCONES (sprite) — usar <svg class="ic"><use href="#i-NOME"/></svg>
+     =========================================================== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+<symbol id="i-alarm" viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2M5 3 2 6M19 3l3 3"/></symbol>
+<symbol id="i-file" viewBox="0 0 24 24"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h8"/></symbol>
+<symbol id="i-table" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M3 15h18M9 4v16M15 4v16"/></symbol>
+<symbol id="i-question" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6v.6M12 17h.01"/></symbol>
+<symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></symbol>
+<symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1.1-4.6A8 8 0 1 1 21 12z"/></symbol>
+<symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M11 3l1.8 4.9L18 9.5l-5.2 1.7L11 16l-1.8-4.8L4 9.5l5.2-1.6z"/><path d="M19 14l.8 2.2L22 17l-2.2.8L19 20l-.8-2.2L16 17l2.2-.8z"/></symbol>
+<symbol id="i-cpu" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/><rect x="9.5" y="9.5" width="5" height="5"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/></symbol>
+<symbol id="i-send" viewBox="0 0 24 24"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4z"/></symbol>
+<symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18z"/></symbol>
+<symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.9 1.9 0 0 0 3.4 0"/></symbol>
+<symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></symbol>
+<symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 3v18h18M7 15l4-4 3 3 5-6"/></symbol>
+<symbol id="i-trend" viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8M15 7h6v6"/></symbol>
+<symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M18 14.5a6.5 6.5 0 0 1 3.5 5.5"/></symbol>
+<symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
+<symbol id="i-bot" viewBox="0 0 24 24"><rect x="4" y="8" width="16" height="12" rx="3"/><path d="M12 4v4M9 14h.01M15 14h.01M9.5 17h5"/><circle cx="12" cy="3" r="1"/></symbol>
+<symbol id="i-phone" viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></symbol>
+<symbol id="i-camera" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7l1.5-3h5L16 7"/><circle cx="12" cy="13.5" r="3.5"/></symbol>
+<symbol id="i-video" viewBox="0 0 24 24"><rect x="2" y="6" width="14" height="12" rx="2"/><path d="M16 10l6-3v10l-6-3"/></symbol>
+<symbol id="i-play" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="4"/><path d="M10 9l5 3-5 3z"/></symbol>
+<symbol id="i-code" viewBox="0 0 24 24"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/></symbol>
+<symbol id="i-layout" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M9 9v11"/></symbol>
+<symbol id="i-book" viewBox="0 0 24 24"><path d="M4 19.5V5a2 2 0 0 1 2-2h14v16H6.5A2.5 2.5 0 0 0 4 21.5a2.5 2.5 0 0 0 2.5 0H20"/></symbol>
+<symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></symbol>
+<symbol id="i-tooth" viewBox="0 0 24 24"><path d="M7 3C4.5 3 3 5 3 7.5c0 3 1.5 4.5 2 7 .5 3 1 6.5 2.5 6.5S9.5 17 12 17s2 4 4.5 4 2-3.5 2.5-6.5c.5-2.5 2-4 2-7C21 5 19.5 3 17 3c-2 0-3 1-5 1S9 3 7 3z"/></symbol>
+<symbol id="i-hospital" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M12 7v6M9 10h6M10 21v-4h4v4"/></symbol>
+<symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-7-6.3-7-12a7 7 0 0 1 14 0c0 5.7-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></symbol>
+<symbol id="i-map" viewBox="0 0 24 24"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2zM9 4v14M15 6v14"/></symbol>
+<symbol id="i-nav" viewBox="0 0 24 24"><path d="M3 11l19-9-9 19-2-8z"/></symbol>
+<symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 6a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol>
+<symbol id="i-clipboard" viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M9 10h6M9 14h6M9 18h3"/></symbol>
+<symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+<symbol id="i-percent" viewBox="0 0 24 24"><circle cx="7" cy="7" r="2.5"/><circle cx="17" cy="17" r="2.5"/><path d="M19 5 5 19"/></symbol>
+<symbol id="i-funnel" viewBox="0 0 24 24"><path d="M3 4h18l-7 9v6l-4 2v-8z"/></symbol>
+<symbol id="i-zap" viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></symbol>
+<symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+<symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></symbol>
+<symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></symbol>
+<symbol id="i-refresh" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.6-6.4L21 8M21 3v5h-5"/></symbol>
+<symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+<symbol id="i-wallet" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18M16 14.5h2"/></symbol>
+<symbol id="i-calc" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M8 6h8v4H8zM8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01"/></symbol>
+<symbol id="i-trophy" viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM7 6H4a3 3 0 0 0 3 4M17 6h3a3 3 0 0 1-3 4"/></symbol>
+<symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3l2.8 5.7 6.2.9-4.5 4.4 1 6.2L12 17.3 6.5 20.2l1-6.2L3 9.6l6.2-.9z"/></symbol>
+<symbol id="i-text" viewBox="0 0 24 24"><path d="M4 6h16M4 10h16M4 14h16M4 18h10"/></symbol>
+<symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/></symbol>
+<symbol id="i-card" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/></symbol>
+<symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 3 2 8l10 5 10-5zM2 13l10 5 10-5M2 17l10 5 10-5"/></symbol>
+<symbol id="i-pencil" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16zM13.5 6.5l4 4"/></symbol>
+<symbol id="i-hand" viewBox="0 0 24 24"><path d="M8 13V5.5a1.5 1.5 0 0 1 3 0V12M11 11V4a1.5 1.5 0 0 1 3 0v7M14 11V5.5a1.5 1.5 0 0 1 3 0V14c0 4-2.5 7-6.5 7S5 18.5 4 16l-1.5-3.5a1.5 1.5 0 0 1 2.6-1.4L8 14"/></symbol>
+<symbol id="i-smile" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8.5 14.5a4.5 4.5 0 0 0 7 0M9 9.5h.01M15 9.5h.01"/></symbol>
+</defs>
+</svg>
+
+<!-- ===========================================================
+     O DECK
+     =========================================================== -->
+<div class="deck-viewport"><div class="deck-stage">
+<!-- ===== 01-cap1-historia.html ===== -->
+<section class="slide" data-title="Título">
+  <img src="assets/vinicius-terno.jpg" alt="Vinícius Faustinoni" style="position:absolute;right:0;top:0;width:860px;height:768px;object-fit:cover;object-position:50% 6%;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 42%);mask-image:linear-gradient(90deg,transparent 0,#000 42%)">
+  <div class="glow g-tl"></div>
+  <div class="chrome tl">New Master · <b>corretores e supervisores</b></div>
+  <div class="frame l-stmt" style="right:800px">
+    <div class="h-xl r" style="font-size:196px">IA</div>
+    <div class="h-xl teal r" style="font-size:196px">de verdade</div>
+    <p class="sub r" style="margin-top:40px">Uma tarde de IA que devolve tempo. <b>Sem programar, sem API.</b></p>
+    <p class="sub r" style="margin-top:10px;font-size:30px"><b>Vinícius Faustinoni</b> · vinicius.faustinoni.com</p>
+  </div>
+  <div class="chrome bl">Na sede da <b>New Master</b></div>
+</section>
+
+<section class="slide" data-fundo="imagem:a1" data-section="Trajetória" data-station="1/15" data-title="R$ 27">
+  <div class="glow g-c"></div>
+  <div class="frame l-stmt center">
+    <div class="ic-circle sm r pop" style="margin-bottom:34px"><svg class="ic"><use href="#i-tooth"/></svg></div>
+    <div class="kicker r">Primeira comissão</div>
+    <div class="h-xxl r">R$ 27</div>
+    <p class="sub r">Comecei vendendo dental. Quem me colocou nisso foi <b>a minha mãe</b>.</p>
+  </div>
+</section>
+
+<section class="slide" data-fundo="filme:f1" data-section="Trajetória" data-station="2/15" data-title="Saúde">
+  <div class="glow g-tr"></div>
+  <div class="frame l-split rev">
+    <div class="vis r pop"><div class="ic-circle lg"><svg class="ic"><use href="#i-trend"/></svg></div></div>
+    <div class="txt">
+      <div class="kicker r">Depois do dental</div>
+      <div class="h-xl r">Saúde.</div>
+      <p class="sub r">Resolvi vender saúde: ticket maior, comissão maior, <b>dor de cabeça maior</b>.</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-fundo="filme:f2" data-section="Trajetória" data-station="3/15" data-title="5 horas, 0 clientes">
+  <div class="glow g-tl"></div>
+  <div class="frame l-split">
+    <div class="txt">
+      <div class="h-xl r">5 horas.</div>
+      <div class="h-xl teal r">0 clientes.</div>
+      <p class="sub r">Plantão de 5 horas <b>esperando cliente entrar na loja.</b></p>
+    </div>
+    <div class="vis r pop"><div class="clock"><i class="h"></i><i class="m"></i></div></div>
+  </div>
+</section>
+
+<section class="slide" data-fundo="filme:f3" data-section="Trajetória" data-station="3/15" data-title="A pastinha de 2 kg">
+  <div class="glow g-br"></div>
+  <div class="frame l-number">
+    <div class="num r">2 kg</div>
+    <div class="num-label r">de tabelas.<p class="sub" style="font-size:32px;letter-spacing:0;font-weight:400">A pastinha do plantão. <b>Ela volta hoje à tarde.</b></p></div>
+    <div class="ic-circle lg r pop" style="margin-left:auto"><svg class="ic"><use href="#i-folder"/></svg></div>
+  </div>
+</section>
+
+<section class="slide" data-fundo="filme:f4" data-section="Trajetória" data-station="4/15" data-title="Tráfego pago">
+  <div class="glow g-tr"></div>
+  <div class="frame l-split">
+    <div class="txt">
+      <div class="h-l r">Tráfego pago.</div>
+      <p class="sub r">Ouvi o termo no YouTube e apostei tudo numa mentoria. <b>O dinheiro voltou.</b></p>
+    </div>
+    <div class="vis r pop" style="gap:26px">
+      <div class="ic-circle sm"><svg class="ic"><use href="#i-play"/></svg></div>
+      <svg class="ic" style="font-size:52px;color:var(--teal)"><use href="#i-arrow"/></svg>
+      <div class="ic-circle sm"><svg class="ic"><use href="#i-wallet"/></svg></div>
+      <svg class="ic" style="font-size:52px;color:var(--teal)"><use href="#i-arrow"/></svg>
+      <div class="ic-circle sm"><svg class="ic"><use href="#i-funnel"/></svg></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-fundo="cena:s9" data-section="Trajetória" data-station="5/15" data-title="100%">
+  <div class="glow g-c"></div>
+  <div class="frame l-stmt center">
+    <div class="ic-circle sm r pop" style="margin-bottom:34px"><svg class="ic"><use href="#i-hand"/></svg></div>
+    <div class="h-xxl teal r">100%</div>
+    <p class="sub r">Comecei a pagar 100% da comissão para os amigos venderem, <b>e eu ficava com o bônus.</b></p>
+  </div>
+</section>
+
+<section class="slide" data-fundo="cena:s10" data-section="Trajetória" data-station="5/15" data-title="Falta de tempo">
+  <div class="glow g-bl"></div>
+  <div class="frame l-quote">
+    <p class="q r" style="font-size:112px;line-height:1.08">Não é generosidade.<br>É <em>falta de tempo</em>.</p>
+    <p class="sub r" style="margin-top:34px">Leads demais. <b>Dividi com os amigos.</b></p>
+  </div>
+</section>
+
+<section class="slide" data-fundo="cena:s11" data-section="Trajetória" data-station="6/15" data-title="Supervisor">
+  <div class="glow g-tl"></div>
+  <div class="frame l-split">
+    <div class="txt">
+      <div class="kicker r">Sem querer</div>
+      <div class="h-xl r">Supervisor.</div>
+      <p class="sub r">Pessoas atendiam por mim e eu comissionava. <b>Virei supervisor sem curso e sem crachá.</b></p>
+    </div>
+    <div class="vis r pop" style="flex-direction:column;gap:0">
+      <div class="ic-circle sm" style="background:var(--teal);color:#04120F"><svg class="ic"><use href="#i-user"/></svg></div>
+      <i style="width:3px;height:44px;background:var(--teal-line)"></i>
+      <i style="width:510px;height:3px;background:var(--teal-line)"></i>
+      <div style="display:flex;gap:40px">
+        <div style="display:flex;flex-direction:column;align-items:center"><i style="width:3px;height:44px;background:var(--teal-line)"></i><div class="ic-circle sm ghost"><svg class="ic"><use href="#i-user"/></svg></div></div>
+        <div style="display:flex;flex-direction:column;align-items:center"><i style="width:3px;height:44px;background:var(--teal-line)"></i><div class="ic-circle sm ghost"><svg class="ic"><use href="#i-user"/></svg></div></div>
+        <div style="display:flex;flex-direction:column;align-items:center"><i style="width:3px;height:44px;background:var(--teal-line)"></i><div class="ic-circle sm ghost"><svg class="ic"><use href="#i-user"/></svg></div></div>
+        <div style="display:flex;flex-direction:column;align-items:center"><i style="width:3px;height:44px;background:var(--teal-line)"></i><div class="ic-circle sm ghost"><svg class="ic"><use href="#i-user"/></svg></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-fundo="cena:e3" data-section="Trajetória" data-station="7/15" data-title="Qual a carência? ×1000">
+  <div class="glow g-br"></div>
+  <div class="frame l-split rev">
+    <div class="vis r pop">
+      <div class="ic-circle lg" style="position:relative"><svg class="ic"><use href="#i-phone"/></svg><span style="position:absolute;top:6px;right:-18px;background:var(--bad);color:#fff;font:900 46px/1 var(--f-display);letter-spacing:-.03em;padding:16px 22px;border-radius:999px;box-shadow:0 10px 40px rgba(255,107,91,.45)">999+</span></div>
+    </div>
+    <div class="txt">
+      <div class="h-l r">"Qual a carência?" <span class="teal">×1000</span></div>
+      <p class="sub r">A dor do supervisor: todo mundo perguntando a mesma coisa, <b>o dia inteiro.</b></p>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-fundo="cena:s13" data-section="Trajetória" data-station="8/15" data-title="Maya">
+  <div class="glow g-tr"></div>
+  <div class="frame l-split">
+    <div class="txt">
+      <div class="h-xxl r">Maya.</div>
+      <p class="sub r">Criei a Maya olhando a dor do corretor: <b>informação na hora certa.</b></p>
+    </div>
+    <div class="vis r pop" style="gap:36px">
+      <div class="ic-circle sm ghost"><svg class="ic"><use href="#i-bot"/></svg></div>
+      <div class="ic-circle lg"><svg class="ic"><use href="#i-bot"/></svg></div>
+      <div class="ic-circle sm ghost"><svg class="ic"><use href="#i-bot"/></svg></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-fundo="cena:s14" data-section="Trajetória" data-station="9/15" data-title="Não fecha">
+  <div class="glow g-bl"></div>
+  <div class="frame l-stmt center">
+    <div class="r" style="display:flex;align-items:flex-start;gap:34px;margin-bottom:44px">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:20px;font:600 22px/1 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)"><div class="ic-circle" style="width:150px;height:150px;font-size:74px"><svg class="ic"><use href="#i-book"/></svg></div>Aprender</div>
+      <span style="font:900 60px/150px var(--f-display);color:var(--dim)">+</span>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:20px;font:600 22px/1 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)"><div class="ic-circle" style="width:150px;height:150px;font-size:74px"><svg class="ic"><use href="#i-zap"/></svg></div>Aplicar</div>
+      <span style="font:900 60px/150px var(--f-display);color:var(--dim)">+</span>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:20px;font:600 22px/1 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)"><div class="ic-circle" style="width:150px;height:150px;font-size:74px"><svg class="ic"><use href="#i-clock"/></svg></div>Dormir</div>
+      <span style="font:900 60px/150px var(--f-display);color:var(--dim)">+</span>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:20px;font:600 22px/1 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)"><div class="ic-circle" style="width:150px;height:150px;font-size:74px"><svg class="ic"><use href="#i-heart"/></svg></div>Filhas</div>
+      <span style="font:900 60px/150px var(--f-display);color:var(--dim)">+</span>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:20px;font:600 22px/1 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)"><div class="ic-circle" style="width:150px;height:150px;font-size:74px"><svg class="ic"><use href="#i-wallet"/></svg></div>Boletos</div>
+      <span style="font:900 60px/150px var(--f-display);color:var(--dim)">=</span>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:20px;font:600 22px/1 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--bad)"><div class="ic-circle" style="width:150px;height:150px;font-size:74px;background:rgba(255,107,91,.12);border-color:rgba(255,107,91,.5);color:var(--bad)"><svg class="ic"><use href="#i-calendar"/></svg></div>24 h</div>
+    </div>
+    <div class="h-l r">Não <span class="bad">fecha.</span></div>
+    <p class="sub r">Com filhas pequenas e boletos, <b>não sobrava hora nenhuma para aprender.</b></p>
+  </div>
+</section>
+
+<section class="slide" data-fundo="cena:e2" data-section="Trajetória" data-station="9/15" data-title="04:00">
+  <div class="glow g-tr"></div>
+  <div class="frame l-split">
+    <div class="txt">
+      <div class="kicker r">Todo dia</div>
+      <div class="h-xxl teal r">04:00</div>
+      <p class="sub r">Eu acordava às 8 e passei a acordar às 4: <b>+1.400 horas por ano.</b></p>
+    </div>
+    <div class="vis r pop"><div class="ic-circle lg"><svg class="ic"><use href="#i-alarm"/></svg></div></div>
+  </div>
+</section>
+
+<section class="slide" data-fundo="cena:s18" data-section="Trajetória" data-station="10/15" data-title="Sistemas">
+  <div class="glow g-bl"></div>
+  <div class="frame l-split rev">
+    <div class="vis r pop" style="gap:36px">
+      <div class="ic-circle lg"><svg class="ic"><use href="#i-code"/></svg></div>
+      <div style="display:flex;flex-direction:column;gap:36px">
+        <div class="ic-circle sm ghost"><svg class="ic"><use href="#i-layout"/></svg></div>
+        <div class="ic-circle sm ghost"><svg class="ic"><use href="#i-cpu"/></svg></div>
+      </div>
+    </div>
+    <div class="txt">
+      <div class="h-xl r">Sistemas.</div>
+      <p class="sub r">Com o tempo das 4 da manhã, <b>aprendi a desenvolver sistemas.</b></p>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-fundo="cena:boom" data-vel="1.6" data-section="Trajetória" data-station="11/15" data-title="BOOM">
+  <div class="glow g-c"></div>
+  <div class="frame l-stmt center">
+    <div class="h-xxl r">BOOM.</div>
+    <div class="r" style="display:flex;gap:80px;margin-top:40px;font-size:72px;color:var(--teal)">
+      <svg class="ic"><use href="#i-chat"/></svg><svg class="ic"><use href="#i-bot"/></svg><svg class="ic"><use href="#i-sparkles"/></svg><svg class="ic"><use href="#i-image"/></svg><svg class="ic"><use href="#i-cpu"/></svg><svg class="ic"><use href="#i-zap"/></svg>
+    </div>
+    <p class="sub r" style="margin-top:36px">Veio o boom das IAs: tudo o que eu aprendi <b>virou superpoder.</b></p>
+  </div>
+</section>
+
+<section class="slide" data-fundo="cena:e7" data-section="Trajetória" data-station="12/15" data-title="Hoje: 1 pessoa + IAs">
+  <div class="glow g-tl"></div>
+  <div class="frame l-split">
+    <div class="txt">
+      <div class="kicker r">Meu time hoje</div>
+      <div class="h-l r">1 pessoa.</div>
+      <div class="h-l teal r">Um exército</div>
+      <div class="h-l teal r">de IAs.</div>
+      <p class="sub r">Eu lidero um time gigante. <b>Total: 1 pessoa.</b></p>
+    </div>
+    <div class="vis r pop">
+      <div style="display:grid;grid-template-columns:repeat(5,76px);gap:34px;font-size:76px;color:var(--teal)">
+        <svg class="ic" style="color:var(--ink);stroke-width:2.4"><use href="#i-user"/></svg>
+        <svg class="ic"><use href="#i-bot"/></svg><svg class="ic"><use href="#i-bot"/></svg><svg class="ic"><use href="#i-bot"/></svg><svg class="ic"><use href="#i-bot"/></svg>
+        <svg class="ic"><use href="#i-bot"/></svg><svg class="ic"><use href="#i-bot"/></svg><svg class="ic"><use href="#i-bot"/></svg><svg class="ic"><use href="#i-bot"/></svg><svg class="ic"><use href="#i-bot"/></svg>
+        <svg class="ic"><use href="#i-bot"/></svg><svg class="ic"><use href="#i-bot"/></svg><svg class="ic"><use href="#i-bot"/></svg><svg class="ic"><use href="#i-bot"/></svg><svg class="ic"><use href="#i-bot"/></svg>
+        <svg class="ic"><use href="#i-bot"/></svg><svg class="ic"><use href="#i-bot"/></svg><svg class="ic"><use href="#i-bot"/></svg><svg class="ic"><use href="#i-bot"/></svg><svg class="ic"><use href="#i-bot"/></svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-fundo="cena:s22" data-section="Trajetória" data-station="12/15" data-title="Mãe, vira supervisora">
+  <div class="frame l-stmt">
+    <div class="l-versus" style="display:flex;height:370px">
+      <div class="vs a r"><div class="vs-top">Ela, lá atrás</div><div class="one" style="color:var(--muted);font-size:54px">"Filho, vem vender dental."</div></div>
+      <div class="vs-mid r"><svg class="ic"><use href="#i-arrow"/></svg></div>
+      <div class="vs b r"><div class="vs-top">Eu, anos depois</div><div class="one" style="font-size:54px">"Mãe, vira supervisora."</div></div>
+    </div>
+    <p class="sub r" style="margin-top:30px">Minha antiga equipe hoje é <b>da minha mãe</b>. Ela virou supervisora.</p>
+  </div>
+</section>
+
+<section class="slide" data-section="Trajetória" data-station="13/15" data-title="Mosaico dos sistemas">
+  <div class="frame l-mosaic" style="--cols:4;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:1fr 1fr 1fr auto;gap:22px">
+    <div class="tile r"><svg class="ic"><use href="#i-send"/></svg>Disparador</div>
+    <div class="tile r"><svg class="ic"><use href="#i-bot"/></svg>Maya</div>
+    <div class="tile r"><svg class="ic"><use href="#i-chat"/></svg>Ayla</div>
+    <div class="tile r"><svg class="ic"><use href="#i-funnel"/></svg>CRM de leads</div>
+    <div class="tile r"><svg class="ic"><use href="#i-clipboard"/></svg>Propostas</div>
+    <div class="tile r"><svg class="ic"><use href="#i-calc"/></svg>Simulador</div>
+    <div class="tile r"><svg class="ic"><use href="#i-map"/></svg>Mapa Hospitalar</div>
+    <div class="tile r"><svg class="ic"><use href="#i-shield"/></svg>Associações</div>
+    <div class="tile hi r" style="grid-column:span 2;font-size:54px"><svg class="ic"><use href="#i-layers"/></svg>New Master 360</div>
+    <div class="tile hi r" style="grid-column:span 2;font-size:54px"><svg class="ic"><use href="#i-bot"/></svg>Lu</div>
+    <p class="sub r" style="grid-column:1/-1;margin:4px 0 0">Corretoras, operadoras, associações de veículos. <b>E dois que vocês conhecem.</b></p>
+  </div>
+</section>
+
+<section class="slide" data-section="Trajetória" data-station="13/15" data-title="New Master 360 e a Lu">
+  <div class="glow g-c"></div>
+  <div class="frame l-stmt">
+    <div class="l-cards" style="display:flex;height:390px">
+      <div class="card hi r"><div class="c-top">Propostas · comissões</div><div class="c-ic" style="font-size:96px"><svg class="ic"><use href="#i-layers"/></svg></div><div class="c-big" style="font-size:88px">New Master 360</div></div>
+      <div class="card hi r"><span class="badge">24/7</span><div class="c-top">No WhatsApp dos corretores</div><div class="c-ic" style="font-size:96px"><svg class="ic"><use href="#i-bot"/></svg></div><div class="c-big" style="font-size:100px">Lu</div></div>
+    </div>
+    <p class="sub r" style="margin-top:30px">Um cuida de quase 23 mil vendas por ano. <b>A outra responde no WhatsApp a qualquer hora.</b></p>
+  </div>
+</section>
+
+<section class="slide" data-fundo="cena:s25" data-section="Trajetória" data-station="13/15" data-title="A ferramenta de hoje de manhã">
+  <div class="glow g-c"></div>
+  <div class="frame l-stmt center">
+    <div class="h-m r">A ferramenta que você usou<br><span class="muted">hoje de manhã…</span></div>
+    <p class="sub r" style="margin-top:40px">Proposta, comissão, conta corrente: <b>alguém aqui abriu hoje?</b></p>
+  </div>
+</section>
+
+<section class="slide" data-fundo="cena:s26" data-section="Trajetória" data-station="13/15" data-title="Fui eu">
+  <div class="glow g-c"></div>
+  <div class="frame l-stmt center">
+    <div class="h-xxl teal r">fui eu.</div>
+    <p class="sub r" style="margin-top:34px">Construí <b>cada um deles.</b></p>
+  </div>
+</section>
+
+<section class="slide" data-fundo="cena:e8" data-section="Trajetória" data-station="13/15" data-title="Às 2 da manhã">
+  <div class="glow g-tr"></div>
+  <div class="frame l-number">
+    <div class="num r">02:00</div>
+    <div class="num-label r">Sem reclamar.<p class="sub" style="font-size:32px;letter-spacing:0;font-weight:400">A Lu atende. <b>Todo dia.</b></p></div>
+    <div class="ic-circle lg r pop" style="margin-left:auto"><svg class="ic"><use href="#i-bot"/></svg></div>
+  </div>
+</section>
+
+<section class="slide" data-section="Trajetória" data-station="14/15" data-title="Livro e treinamento">
+  <div class="glow g-bl"></div>
+  <div class="frame l-split">
+    <div class="txt">
+      <div class="h-l r">Livro.</div>
+      <div class="h-l teal r">Treinamento.</div>
+      <p class="sub r">Escrevi um livro e criei um treinamento. <b>O livro, vocês levam de graça.</b></p>
+    </div>
+    <div class="vis r pop">
+      <img src="assets/livro-capa.png" alt="" style="height:528px;border-radius:14px;box-shadow:0 30px 80px #000">
+      <div style="width:460px;height:528px;box-sizing:border-box;background:linear-gradient(180deg,#0E1B18,var(--card));border:1.5px solid var(--teal);border-radius:24px;padding:44px 40px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 0 60px rgba(26,188,156,.18)">
+        <div class="kicker">Treinamento de tráfego</div>
+        <img src="assets/tpc-logo.png" alt="Tráfego Para Corretores" style="width:340px;align-self:center">
+        <div class="h-s" style="font-size:30px;font-weight:700;line-height:1.25">30 aulas de<br>Meta, Google e IA</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-fundo="cena:s29" data-section="Trajetória" data-station="15/15" data-title="Eu tenho tempo, pode falar!">
+  <div class="glow g-c"></div>
+  <div class="frame l-stmt center">
+    <div class="h-xl r">Eu tenho tempo,</div>
+    <div class="h-xl teal r" style="margin-top:14px">pode falar!</div>
+    <p class="sub r" style="margin-top:34px">É o que eu digo quando alguém me liga. <b>A IA devolve tempo.</b></p>
+  </div>
+</section>
+
+<!-- ===== 02-cap2-ia.html ===== -->
+<section class="slide" data-section="O mapa da tarde" data-title="Nove capítulos">
+  <div class="glow g-tr"></div>
+  <div class="frame l-mosaic" style="--cols:3;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:1fr 1fr 1fr;gap:18px">
+    <div class="tile r" style="font-size:32px;flex-direction:column;gap:8px;padding:0 20px"><span>1&nbsp;·&nbsp;Minha&nbsp;história</span><span style="font:400 22px/1.25 var(--f-body);color:var(--muted);letter-spacing:0">de R$ 27 às 4 da manhã</span></div>
+    <div class="tile hi r" style="font-size:32px;flex-direction:column;gap:8px;padding:0 20px"><span>2&nbsp;·&nbsp;O&nbsp;que&nbsp;é&nbsp;IA</span><span style="font:400 22px/1.25 var(--f-body);color:var(--muted);letter-spacing:0">de onde veio e o que mudou</span></div>
+    <div class="tile r" style="font-size:32px;flex-direction:column;gap:8px;padding:0 20px"><span>3&nbsp;·&nbsp;Contratando&nbsp;o&nbsp;Claude</span><span style="font:400 22px/1.25 var(--f-body);color:var(--muted);letter-spacing:0">planos · por que assinar · como pedir</span></div>
+    <div class="tile r" style="font-size:32px;flex-direction:column;gap:8px;padding:0 20px"><span>4&nbsp;·&nbsp;Primeiras&nbsp;tarefas</span><span style="font:400 22px/1.25 var(--f-body);color:var(--muted);letter-spacing:0">painel · site</span></div>
+    <div class="tile r" style="font-size:32px;flex-direction:column;gap:8px;padding:0 20px"><span>5&nbsp;·&nbsp;O&nbsp;que&nbsp;é&nbsp;um&nbsp;agente</span><span style="font:400 22px/1.25 var(--f-body);color:var(--muted);letter-spacing:0">a pasta que trabalha</span></div>
+    <div class="tile r" style="font-size:32px;flex-direction:column;gap:8px;padding:0 20px"><span>6&nbsp;·&nbsp;O&nbsp;agente&nbsp;do&nbsp;corretor</span><span style="font:400 22px/1.25 var(--f-body);color:var(--muted);letter-spacing:0">anúncio · cotação · retorno</span></div>
+    <div class="tile r" style="font-size:32px;flex-direction:column;gap:8px;padding:0 20px"><span>7&nbsp;·&nbsp;O&nbsp;agente&nbsp;do&nbsp;supervisor</span><span style="font:400 22px/1.25 var(--f-body);color:var(--muted);letter-spacing:0">portais · pendências · 7h</span></div>
+    <div class="tile r" style="font-size:32px;flex-direction:column;gap:8px;padding:0 20px"><span>8&nbsp;·&nbsp;No&nbsp;automático</span><span style="font:400 22px/1.25 var(--f-body);color:var(--muted);letter-spacing:0">aprende · horário · celular</span></div>
+    <div class="tile r" style="font-size:32px;flex-direction:column;gap:8px;padding:0 20px"><span>9&nbsp;·&nbsp;Entre&nbsp;nesse&nbsp;mundo</span><span style="font:400 22px/1.25 var(--f-body);color:var(--muted);letter-spacing:0">o algoritmo · os presentes</span></div>
+  </div>
+  <div class="cue r">O primeiro já passou. O ponto alto é o 5: <b>o que é um agente.</b></div>
+</section>
+
+
+<section class="slide" data-fundo="cena:c2" data-tag="Capítulo 2 de 9" data-station="2/9" data-title="Capítulo 2 — O que é IA">
+  <div class="glow g-br"></div>
+  <div class="frame l-act">
+    <div class="act-n r">Capítulo 2 de 9</div>
+    <h2 class="act-t r">O que é<br><span class="teal">IA</span></h2>
+    <div class="act-bar"></div>
+    <p class="sub r">Sem aula de faculdade: de onde veio e <b>por que agora é diferente</b>.</p>
+  </div>
+</section>
+
+<section class="slide" data-fundo="cena:s32" data-section="O que é IA" data-tag="Em uma frase" data-title="Leu de tudo. Menos você.">
+  <div class="glow g-tl"></div>
+  <div class="frame l-split">
+    <div class="txt">
+      <div class="kicker r">IA, em uma frase</div>
+      <div class="h-xl r" style="font-size:128px">Leu de tudo.</div>
+      <div class="h-xl teal r" style="font-size:128px">Menos você.</div>
+      <p class="sub r">Sabe muito sobre o mundo. Sobre o seu cliente, a sua tabela e o seu jeito, <b>nada</b>.</p>
+    </div>
+    <div class="vis r pop"><div class="ic-circle lg"><svg class="ic"><use href="#i-book"/></svg></div></div>
+  </div>
+</section>
+
+<section class="slide" data-section="As eras da IA" data-title="As eras da IA">
+  <div class="glow g-tr"></div>
+  <div class="frame l-timeline">
+    <div class="h-m r" style="margin-bottom:56px">Onde estamos?</div>
+    <div class="tline">
+      <div class="tline-item past r"><div class="dot"><svg class="ic"><use href="#i-phone"/></svg></div><div class="t1">Antes de 2022</div><div class="t2">URA</div></div>
+      <div class="tline-item past r"><div class="dot"><svg class="ic"><use href="#i-chat"/></svg></div><div class="t1">Nov/2022</div><div class="t2">Chat</div></div>
+      <div class="tline-item past r"><div class="dot"><svg class="ic"><use href="#i-text"/></svg></div><div class="t1">2023–2024</div><div class="t2">Prompt</div></div>
+      <div class="tline-item on r"><div class="dot"><svg class="ic"><use href="#i-bot"/></svg></div><div class="t1">Out/2024 →</div><div class="t2">Agentes</div></div>
+    </div>
+  </div>
+  <div class="cue r">A IA não chegou ontem: URA, chat, prompt. <b>E agora, a era dos agentes.</b></div>
+</section>
+
+<section class="slide" data-fundo="cena:s34" data-section="As eras da IA" data-tag="Antes de 2022" data-title="Desculpe, não entendi">
+  <div class="glow g-bl"></div>
+  <div class="frame l-split">
+    <div class="txt">
+      <div class="kicker r">A IA que a gente conhecia</div>
+      <div class="h-l r">"Desculpe,</div>
+      <div class="h-l r">não entendi."</div>
+      <div class="sub r">Digite 1 para boleto, 2 para segunda via. <b>Era essa a IA que a gente conhecia.</b></div>
+    </div>
+    <div class="vis r pop"><div class="ic-circle lg ghost"><svg class="ic"><use href="#i-phone"/></svg></div></div>
+  </div>
+</section>
+
+<section class="slide" data-fundo="cena:e9" data-section="As eras da IA" data-tag="Antes de 2022" data-title="ATENDENTE!">
+  <div class="glow g-c"></div>
+  <div class="frame l-stmt center">
+    <div class="kicker r">Quem nunca gritou</div>
+    <div class="h-xxl warn r" style="font-size:156px">ATENDENTE!</div>
+    <p class="sub r">Quem aqui já gritou isso para o telefone? <b>Levanta a mão.</b></p>
+  </div>
+</section>
+
+<section class="slide" data-section="As eras da IA" data-tag="Era do chat" data-title="Chat">
+  <div class="glow g-tl"></div>
+  <div class="frame l-split rev">
+    <div class="vis r"><figure class="shot"><img src="assets/web/chatgpt-inicio.png" alt="Tela inicial do ChatGPT: Por onde começamos? Pergunte ao ChatGPT"></figure></div>
+    <div class="txt">
+      <div class="kicker r">30 · 11 · 2022</div>
+      <div class="h-xl r">Chat.</div>
+      <div class="sub r">O ChatGPT conversa: você pergunta, ele responde. <b>Quem trabalha continua sendo você.</b></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-fundo="cena:s37" data-section="As eras da IA" data-tag="Era do chat" data-title="100 mi em 2 meses">
+  <div class="glow g-br"></div>
+  <div class="frame l-number">
+    <div class="num r">100 mi</div>
+    <div class="num-label r">usuários em 2 meses.<small>TikTok: ~9 meses. Instagram: ~2,5 anos.</small></div>
+  </div>
+</section>
+
+<section class="slide" data-fundo="cena:s38" data-section="As eras da IA" data-tag="Era do prompt" data-title="Prompt">
+  <div class="glow g-tl"></div>
+  <div class="frame l-split">
+    <div class="txt">
+      <div class="kicker r">2023 – 2024</div>
+      <div class="h-xl r">Prompt.</div>
+      <div class="sub r">Virou profissão: engenheiro de prompt. <b>E o Instagram lotou de PDF com 500 prompts.</b></div>
+    </div>
+    <div class="vis r pop"><div class="ic-circle lg"><svg class="ic"><use href="#i-text"/></svg></div></div>
+  </div>
+</section>
+
+<section class="slide" data-section="As eras da IA" data-tag="Era do prompt" data-title="US$ 335 mil">
+  <div class="glow g-c"></div>
+  <div class="frame l-number">
+    <div class="num r"><small>até US$ </small>335<small> mil</small></div>
+    <div class="num-label r">por ano.<small>Vaga de engenheiro de prompt, 2023. <b style="color:var(--ink)">Adivinha a empresa.</b></small></div>
+  </div>
+</section>
+
+
+<section class="slide" data-section="As eras da IA" data-tag="Era dos agentes" data-title="Agentes">
+  <div class="glow g-tr"></div>
+  <div class="frame l-split">
+    <div class="txt">
+      <div class="kicker r">Out/2024 · o Claude usa o computador</div>
+      <div class="h-xl r">Agentes.</div>
+      <div class="sub r">Ele olha a tela, move o mouse, clica e digita. <b>Hoje, no seu Chrome.</b></div>
+      <div class="trad r"><span class="lbl">Em corretorês</span><span class="fato">Agente = <b>funcionário</b>. Não só responde: faz.</span></div>
+    </div>
+    <div class="vis r"><figure class="shot tall"><img src="assets/web/anthropic-computer-use.png" alt="Anúncio da Anthropic: Introducing computer use, 22 de outubro de 2024"></figure></div>
+  </div>
+</section>
+
+<section class="slide" data-fundo="cena:s41" data-section="As eras da IA" data-tag="Era dos agentes" data-title="Do explica ao faz">
+  <div class="glow g-c"></div>
+  <div class="frame l-stmt center">
+    <div class="h-l muted strike r">"Me explica como faz."</div>
+    <div class="h-xxl teal r" style="margin-top:36px">"Faz."</div>
+    <p class="sub r">A virada: você para de pedir a receita, <b>e ele passa a cozinhar.</b></p>
+  </div>
+</section>
+
+<section class="slide" data-fundo="cena:s42" data-section="As eras da IA" data-title="GPS × Uber">
+  <div class="frame l-cards">
+    <div class="card r"><div class="c-top">Era do chat</div><div class="c-ic" style="font-size:110px;color:var(--muted)"><svg class="ic"><use href="#i-nav"/></svg></div><div class="c-big" style="font-size:130px;color:var(--muted)">GPS</div><div class="c-sub">Te diz a rota. <b>Quem dirige é você.</b></div></div>
+    <div class="card hi r"><span class="badge">Hoje</span><div class="c-top">Era dos agentes</div><div class="c-ic" style="font-size:110px"><svg class="ic"><use href="#i-pin"/></svg></div><div class="c-big" style="font-size:130px">Uber</div><div class="c-sub">Você diz aonde quer chegar. <b>E senta atrás.</b></div></div>
+  </div>
+  <div class="cue r">Ninguém precisa aprender a dirigir a IA. <b>Precisa saber aonde quer chegar.</b></div>
+</section>
+
+<section class="slide" data-fundo="cena:s43" data-section="As eras da IA" data-title="Quem sabe delegar">
+  <div class="glow g-bl"></div>
+  <div class="frame l-quote">
+    <p class="q r">Na era do chat ganhava quem sabia escrever. Na era dos agentes ganha quem sabe <em>delegar</em>.</p>
+    <div class="who r">E os supervisores já sabem</div>
+    <p class="sub r" style="margin-top:30px">Vocês passaram anos gerenciando gente. <b>Agora vão gerenciar agentes.</b></p>
+  </div>
+</section>
+
+<!-- ===== 03-cap3-claude.html ===== -->
+<section class="slide" data-fundo="cena:c3" data-tag="Capítulo 3 de 9" data-station="3/9" data-title="Capítulo 3 — Contratando o Claude">
+  <div class="glow g-br"></div>
+  <div class="frame l-act">
+    <div class="act-n r">Capítulo 3 de 9</div>
+    <h2 class="act-t r">Contratando<br><span class="teal">o Claude</span></h2>
+    <div class="act-bar"></div>
+    <p class="sub r">Quem é, quanto custa, <b>por que assinar</b> e como falar com ele.</p>
+  </div>
+</section>
+
+<section class="slide" data-fundo="cena:s45" data-section="O Claude" data-tag="O que é" data-title="Claude, da Anthropic">
+  <div class="glow g-tl"></div>
+  <div class="frame l-split rev">
+    <div class="txt">
+      <div class="h-xl r">Claude.</div>
+      <div class="h-xl teal r">Da Anthropic.</div>
+      <p class="sub r">Conversa como o ChatGPT. <b>E faz o trabalho:</b> lê as suas pastas, usa o seu navegador e entrega pronto.</p>
+    </div>
+    <div class="vis r pop"><div class="ic-circle lg"><svg class="ic"><use href="#i-sparkles"/></svg></div></div>
+  </div>
+  <div class="cue r">É a IA da Anthropic. <b>A que eu uso para tudo, inclusive para fazer esta apresentação.</b></div>
+</section>
+
+<section class="slide" data-section="O Claude" data-tag="Pedidos de verdade" data-title="Pedidos que fazem ele trabalhar">
+  <div class="glow g-tr"></div>
+  <div class="frame" style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:26px">
+    <div class="card r" style="justify-content:flex-start;gap:16px;padding:30px 40px"><div class="c-top">Lê a pasta · usa o navegador</div><div style="font:600 35px/1.28 var(--f-body);color:var(--ink)">"Nos meus Downloads tem a tabela da Leve Saúde com todas as informações. <b style="color:var(--teal-2)">Acessa o ChatGPT e cria o anúncio.</b>"</div></div>
+    <div class="card r" style="justify-content:flex-start;gap:16px;padding:30px 40px"><div class="c-top">Lê as tabelas · monta a planilha</div><div style="font:600 35px/1.28 var(--f-body);color:var(--ink)">"Pega as tabelas das operadoras que estão na pasta Tabelas e <b style="color:var(--teal-2)">monta uma planilha comparando os preços por idade.</b>"</div></div>
+    <div class="card r" style="justify-content:flex-start;gap:16px;padding:30px 40px"><div class="c-top">Usa o navegador · portal</div><div style="font:600 35px/1.28 var(--f-body);color:var(--ink)">"Entra no portal da Qualicorp e <b style="color:var(--teal-2)">me diz o status das propostas que eu enviei ontem.</b>"</div></div>
+    <div class="card r" style="justify-content:flex-start;gap:16px;padding:30px 40px"><div class="c-top">Usa o navegador · simulador</div><div style="font:600 35px/1.28 var(--f-body);color:var(--ink)">"Abre o simulador, cota 46 anos no Méier e <b style="color:var(--teal-2)">me manda o PDF no WhatsApp.</b>"</div></div>
+  </div>
+  <div class="cue r">Pedido feito como para um funcionário. <b>Ele abre, lê, faz e devolve.</b></div>
+</section>
+
+<section class="slide" data-section="O Claude" data-tag="Planos · set/2026" data-title="Os 4 planos">
+  <div class="frame l-cards">
+    <div class="card r"><div class="c-top">Free</div><div class="c-big">R$ 0</div><div class="c-sub">para testar</div></div>
+    <div class="card hi r"><span class="badge">Hoje</span><div class="c-top">Pro</div><div class="c-big">R$ 110<small>/mês</small></div><div class="c-sub">o que vocês vão ver hoje</div></div>
+    <div class="card r"><div class="c-top">Max 5x</div><div class="c-big">R$ 550<small>+</small></div><div class="c-sub">a partir de · 5x o Pro</div></div>
+    <div class="card r"><div class="c-top">Max 20x</div><div class="c-big">US$ 200</div><div class="c-sub">20x o Pro</div></div>
+  </div>
+</section>
+
+<section class="slide" data-section="O Claude" data-tag="Por que assinar" data-title="O grátis conversa, o Pro trabalha">
+  <div class="frame l-versus">
+    <div class="vs a r">
+      <div class="vs-top">Free · para testar</div>
+      <div class="one muted">Conversa.</div>
+      <p class="sub" style="margin:0">Responde, com limite. <b>Não trabalha no seu computador.</b></p>
+    </div>
+    <div class="vs-mid r">×</div>
+    <div class="vs b r">
+      <div class="vs-top">Pro · o de hoje</div>
+      <div class="one">Trabalha.</div>
+      <p class="sub" style="margin:0">Mexe nas suas pastas e <b>usa o seu Chrome</b>. Os agentes precisam disso.</p>
+    </div>
+  </div>
+  <div class="cue r">O grátis conversa. O Pro trabalha. <b>Uma venda a mais no mês já paga.</b></div>
+</section>
+
+
+<section class="slide" data-fundo="cena:s49" data-section="O Claude" data-tag="Depois de instalado" data-title="Onde ele mora">
+  <div class="glow g-c"></div>
+  <div class="frame l-flow stack">
+    <div class="step r"><div class="ic-circle"><svg class="ic"><use href="#i-folder"/></svg></div><div class="lbl">Computador<small>abre e lê as suas pastas</small></div></div>
+    <div class="step r"><div class="ic-circle"><svg class="ic"><use href="#i-globe"/></svg></div><div class="lbl">Chrome<small>navega e clica por você</small></div></div>
+    <div class="step r"><div class="ic-circle"><svg class="ic"><use href="#i-phone"/></svg></div><div class="lbl">Celular<small>mesma conta, mesmo saldo</small></div></div>
+  </div>
+  <div class="cue r">Depois de instalado, ele mora em três lugares. <b>E o saldo é um só.</b></div>
+</section>
+
+<section class="slide" data-fundo="cena:s50" data-section="O Claude" data-title="Tutorial? YouTube.">
+  <div class="glow g-tl"></div>
+  <div class="frame l-split rev">
+    <div class="txt">
+      <div class="h-xl r">Tutorial?</div>
+      <div class="h-xl teal r">YouTube.</div>
+      <p class="sub r">Não vou instalar aqui, de propósito: <b>quem pesquisa são vocês</b>. No fim eu explico.</p>
+    </div>
+    <div class="vis r pop"><div class="ic-circle lg"><svg class="ic"><use href="#i-play"/></svg></div></div>
+  </div>
+</section>
+
+<section class="slide" data-section="Pesquise" data-title="Pesquise — instalar o Claude">
+  <div class="glow g-c"></div>
+  <div class="frame l-search">
+    <div class="lupa r pop"><svg class="ic"><use href="#i-search"/></svg></div>
+    <div class="qs">
+      <div class="q-label r">Pesquise agora no YouTube</div>
+      <div class="q-box r">como instalar o Claude no computador<span class="caret"></span></div>
+      <div class="q-box r">Claude in Chrome como usar</div>
+      <div class="q-foot r">Celular na mão. <b>Eu espero.</b> Vou contar todas as buscas da tarde.</div>
+    </div>
+  </div>
+</section>
+
+
+<section class="slide" data-fundo="cena:s52" data-section="Como pedir" data-title="A regra">
+  <div class="glow g-bl"></div>
+  <div class="frame l-quote">
+    <div class="kicker r">E agora, o que eu escrevo?</div>
+    <p class="q r">Diga o que você quer como diria para um <em>funcionário seu</em>.</p>
+    <div class="who r">Vocês já fazem isso todo dia</div>
+  </div>
+</section>
+
+<section class="slide" data-section="Como pedir" data-title="2023 × hoje">
+  <div class="frame l-versus">
+    <div class="vs a r"><div class="vs-top">2023 · prompt de curso</div><div class="wall" style="font-size:24px">Aja como um especialista em vendas de planos de saúde com 20 anos de experiência no Rio de Janeiro. Use tom persuasivo e gatilhos mentais. Responda em tópicos. Não use emojis. Considere que o cliente tem 46 anos, mora no Méier, quer enfermaria e aceita coparticipação. Monte uma tabela com três opções, compare preço e rede credenciada, não invente valores, pense passo a passo, revise antes de responder, use no máximo 300 palavras e, por favor, seja criativo, mas não muito, e...</div></div>
+    <div class="vs-mid r">×</div>
+    <div class="vs b r"><div class="vs-top">Hoje · era dos agentes</div><div class="one">"Cota pro meu cliente de 46 no Méier."</div></div>
+  </div>
+</section>
+
+<section class="slide" data-fundo="cena:s54" data-section="Como pedir" data-title="Objetivo, não passo a passo">
+  <div class="glow g-tr"></div>
+  <div class="frame l-split">
+    <div class="txt">
+      <div class="h-xl r">Objetivo.</div>
+      <div class="h-l muted strike r" style="margin-top:14px">Passo a passo.</div>
+      <p class="sub r">Diga aonde quer chegar: <b>"quero mandar 3 opções pra um casal no Méier."</b></p>
+    </div>
+    <div class="vis r pop"><div class="ic-circle lg"><svg class="ic"><use href="#i-pin"/></svg></div></div>
+  </div>
+</section>
+
+<section class="slide" data-section="Como pedir" data-tag="Recebe · faz · devolve" data-title="Ele pergunta o que faltar">
+  <div class="glow g-tl"></div>
+  <div class="frame l-flow">
+    <div class="step r"><div class="ic-circle"><svg class="ic"><use href="#i-chat"/></svg></div><div class="lbl">Você pede<small>o objetivo, numa linha</small></div></div>
+    <div class="arrow r"><svg class="ic"><use href="#i-arrow"/></svg></div>
+    <div class="step r"><div class="ic-circle"><svg class="ic"><use href="#i-question"/></svg></div><div class="lbl">Pergunta<small>ele completa o que faltou</small></div></div>
+    <div class="arrow r"><svg class="ic"><use href="#i-arrow"/></svg></div>
+    <div class="step r"><div class="ic-circle"><svg class="ic"><use href="#i-check"/></svg></div><div class="lbl">Faz<small>e pede a sua aprovação</small></div></div>
+  </div>
+  <div class="cue r">Esqueceu algo? Ele pergunta. <b>Precisa de login ou aprovação? Ele pede.</b></div>
+</section>
+
+<section class="slide" data-fundo="cena:s56" data-section="Como pedir" data-title="Não gostou? Fala.">
+  <div class="glow g-br"></div>
+  <div class="frame l-split">
+    <div class="txt">
+      <div class="h-l r">Não gostou?</div>
+      <div class="h-xl teal r">Fala.</div>
+      <p class="sub r">Como falaria com o corretor: <b>sem fórmula, sem refazer tudo.</b></p>
+    </div>
+    <div class="vis" style="flex-direction:column;align-items:stretch;gap:28px">
+      <div class="tile hi r" style="height:130px;padding:0 56px"><svg class="ic"><use href="#i-chat"/></svg>"Ficou formal demais."</div>
+      <div class="tile hi r" style="height:130px;padding:0 56px"><svg class="ic"><use href="#i-chat"/></svg>"Faz mais curto."</div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-fundo="cena:s57" data-section="Como pedir" data-title="Pode falar.">
+  <div class="glow g-c"></div>
+  <div class="frame l-stmt center">
+    <div class="kicker r">Ele tem tempo</div>
+    <div class="h-xxl r">Pode <span class="teal">falar.</span></div>
+    <p class="sub r">"Eu tenho tempo, pode falar": <b>agora quem diz isso é ele.</b></p>
+  </div>
+</section>
+
+<!-- ===== 04-cap4-tarefas.html ===== -->
+<section class="slide" data-fundo="cena:c4" data-tag="Capítulo 4 de 9" data-station="4/9" data-title="Capítulo 4 — Primeiras tarefas">
+  <div class="glow g-br"></div>
+  <div class="frame l-act">
+    <div class="act-n r">Capítulo 4 de 9</div>
+    <h2 class="act-t r">Primeiras<br><span class="teal">tarefas</span></h2>
+    <div class="act-bar"></div>
+    <p class="sub r">Uma frase vira ferramenta: painel e site. <b>Nada ao vivo.</b></p>
+  </div>
+</section>
+
+<section class="slide" data-section="O que ele faz" data-tag="O cardápio" data-title="O que ele entrega">
+  <div class="frame l-mosaic" style="--cols:4;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:1fr 1fr auto;gap:22px">
+    <div class="tile r" style="font-size:34px;line-height:1.12;text-align:center"><svg class="ic"><use href="#i-folder"/></svg>Organiza as suas pastas</div>
+    <div class="tile r" style="font-size:34px;line-height:1.12;text-align:center"><svg class="ic"><use href="#i-file"/></svg>Lê o PDF e a tabela da operadora</div>
+    <div class="tile r" style="font-size:34px;line-height:1.12;text-align:center"><svg class="ic"><use href="#i-table"/></svg>Monta a planilha que calcula a sua comissão</div>
+    <div class="tile r" style="font-size:34px;line-height:1.12;text-align:center"><svg class="ic"><use href="#i-layout"/></svg>Faz a apresentação para o cliente</div>
+    <div class="tile r" style="font-size:34px;line-height:1.12;text-align:center"><svg class="ic"><use href="#i-text"/></svg>Escreve a proposta, o e-mail, o documento</div>
+    <div class="tile r" style="font-size:34px;line-height:1.12;text-align:center"><svg class="ic"><use href="#i-search"/></svg>Pesquisa na internet e resume</div>
+    <div class="tile hi r" style="font-size:34px;line-height:1.12;text-align:center"><svg class="ic"><use href="#i-chart"/></svg>Monta o painel dos seus leads</div>
+    <div class="tile hi r" style="font-size:34px;line-height:1.12;text-align:center"><svg class="ic"><use href="#i-globe"/></svg>Cria o seu site</div>
+    <p class="sub r" style="grid-column:1/-1;margin:4px 0 0">Tudo saindo de uma conversa. <b>Hoje eu mostro os dois em destaque: o painel e o site.</b></p>
+  </div>
+</section>
+
+<section class="slide" data-section="Painéis" data-title="Não é texto">
+  <div class="glow g-tl"></div>
+  <div class="frame l-split">
+    <div class="txt">
+      <div class="kicker r">Artefato</div>
+      <div class="h-l r">Não é texto.</div>
+      <div class="h-l teal r">É ferramenta.</div>
+      <p class="sub r">Em vez de texto, ele entrega painel,<br>planilha que calcula e <b>controle de leads</b>.</p>
+      <div class="trad r"><span class="lbl">Em corretorês</span><span class="fato">Artefato = <b>ferramenta pronta</b>, que abre no navegador.</span></div>
+    </div>
+    <div class="vis r"><figure class="shot tall"><img src="assets/web/claude-artefatos.png" alt="Central de ajuda do Claude: O que são artefatos e como usá-los?"></figure></div>
+  </div>
+</section>
+
+<section class="slide" data-section="Painéis" data-tag="Recebe · faz · devolve" data-title="Pede, monta, usa">
+  <div class="glow g-tr"></div>
+  <div class="frame l-flow">
+    <div class="step r"><div class="ic-circle"><svg class="ic"><use href="#i-chat"/></svg></div><div class="lbl">Pede<small>"quero controlar<br>meus leads"</small></div></div>
+    <div class="arrow r"><svg class="ic"><use href="#i-arrow"/></svg></div>
+    <div class="step r"><div class="ic-circle"><svg class="ic"><use href="#i-sparkles"/></svg></div><div class="lbl">Monta<small>o Claude constrói<br>a ferramenta</small></div></div>
+    <div class="arrow r"><svg class="ic"><use href="#i-arrow"/></svg></div>
+    <div class="step r"><div class="ic-circle"><svg class="ic"><use href="#i-chart"/></svg></div><div class="lbl">Usa<small>painel pronto, com link</small></div></div>
+  </div>
+</section>
+
+<section class="slide" data-section="Painéis" data-tag="Exemplo 1 de 2" data-title="Meus Leads">
+  <div class="glow g-bl"></div>
+  <div class="frame l-split">
+    <div class="txt">
+      <div class="kicker r">Corretor</div>
+      <div class="h-l r">Meus Leads.</div>
+      <p class="sub r">Peço nome, telefone, operadora, estágio e próximo contato. <b>Sai o quadro por estágio.</b></p>
+    </div>
+    <div class="vis r"><figure class="shot tall"><img src="assets/controle-de-leads-escuro.png" alt="Meus Leads"></figure></div>
+  </div>
+</section>
+
+<section class="slide" data-section="Painéis" data-tag="Exemplo 2 de 2" data-title="Quanto eu ganho se fechar?">
+  <div class="glow g-br"></div>
+  <div class="frame l-split rev">
+    <div class="txt">
+      <div class="kicker r">Corretor</div>
+      <div class="h-l r">Quanto eu</div>
+      <div class="h-l teal r">ganho?</div>
+      <p class="sub r">Peço a comissão dos 5 contratos. <b>Muda um valor, recalcula na hora.</b></p>
+    </div>
+    <div class="vis r"><figure class="shot tall hi"><img src="assets/calculadora-de-comissao-escuro.png" alt="Quanto eu ganho se fechar?"></figure></div>
+  </div>
+</section>
+
+<section class="slide" data-fundo="cena:s64" data-section="Painéis" data-title="Pede outra">
+  <div class="glow g-c"></div>
+  <div class="frame l-stmt center">
+    <div class="kicker r">Não gostou da cor?</div>
+    <div class="h-xxl teal r">Pede outra.</div>
+    <p class="sub r">Outra cor, outra coluna, a logo da corretora. <b>Ajustar é conversar.</b></p>
+  </div>
+</section>
+
+<section class="slide" data-section="Painéis" data-title="Anos × uma frase">
+  <div class="glow g-bl"></div>
+  <div class="frame l-versus">
+    <div class="vs a r"><div class="vs-top">Eu · acordando às 4</div><div class="one muted" style="font-size:132px">Anos.</div></div>
+    <div class="vs-mid r">×</div>
+    <div class="vs b r"><div class="vs-top">Vocês · a partir de hoje</div><div class="one" style="font-size:132px">Uma frase.</div></div>
+  </div>
+  <div class="cue r">Levei anos acordando às 4 pra aprender a fazer sistema. <b>Vocês vão pedir em uma frase.</b></div>
+</section>
+
+<section class="slide" data-section="Pesquise" data-title="Buscas de artefatos">
+  <div class="glow g-c"></div>
+  <div class="frame l-search">
+    <div class="lupa r pop"><svg class="ic"><use href="#i-search"/></svg></div>
+    <div class="qs">
+      <div class="q-label r">Pesquise agora no YouTube</div>
+      <div class="q-box r">Claude artefatos como criar<span class="caret"></span></div>
+      <div class="q-box r">Claude dashboard com artefatos</div>
+      <div class="q-foot r">Uma ensina a criar; a outra mostra dashboard pronto. <b>Eu espero.</b></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-fundo="cena:s67" data-section="Site com o Claude" data-tag="Site" data-title="Saber pedir um site">
+  <div class="glow g-tr"></div>
+  <div class="frame l-split">
+    <div class="txt">
+      <div class="h-xl r">Precisa</div>
+      <div class="h-xl teal r">pedir.</div>
+      <p class="sub r">Você não precisa saber fazer site. Precisa saber pedir. <b>E publicar.</b></p>
+    </div>
+    <div class="vis"><div class="ic-circle lg r pop"><svg class="ic"><use href="#i-globe"/></svg></div></div>
+  </div>
+</section>
+
+<section class="slide" data-section="Site com o Claude" data-title="Site bonito = plano bom e barato">
+  <div class="frame l-versus">
+    <div class="vs a r">
+      <div class="vs-top">Você pede ao Claude</div>
+      <div class="one">"Faz um site bonito."</div>
+    </div>
+    <div class="vs-mid r">=</div>
+    <div class="vs b r">
+      <div class="vs-top">O cliente pede a você</div>
+      <div class="one">"Um plano bom e barato."</div>
+    </div>
+  </div>
+  <div class="cue r">Pedido vago, resultado qualquer. <b>Vocês sabem o que respondem para esse cliente.</b></div>
+</section>
+
+<section class="slide" data-fundo="cena:s69" data-section="Site com o Claude" data-tag="Referências" data-title="4 a 6 referências">
+  <div class="glow g-tl"></div>
+  <div class="frame l-number">
+    <div class="num r">4 a 6</div>
+    <div class="num-label r">sites de que você gosta<small>Ele olha, entende o estilo e segue.</small></div>
+  </div>
+</section>
+
+<section class="slide" data-section="Site com o Claude" data-tag="Site de corretor" data-title="O site do corretor">
+  <div class="frame l-cards">
+    <div class="card r">
+      <div class="c-ic"><svg class="ic"><use href="#i-user"/></svg></div>
+      <div class="c-big" style="font-size:46px;white-space:normal">Quem você é</div>
+      <div class="c-sub">foto, nome de guerra, tempo de estrada</div>
+    </div>
+    <div class="card r">
+      <div class="c-ic"><svg class="ic"><use href="#i-shield"/></svg></div>
+      <div class="c-big" style="font-size:46px;white-space:normal">Operadoras</div>
+      <div class="c-sub">com quem você trabalha</div>
+    </div>
+    <div class="card r">
+      <div class="c-ic"><svg class="ic"><use href="#i-chat"/></svg></div>
+      <div class="c-big" style="font-size:46px;white-space:normal">WhatsApp</div>
+      <div class="c-sub">um botão, bem visível</div>
+    </div>
+    <div class="card hi r">
+      <div class="c-ic"><svg class="ic"><use href="#i-clipboard"/></svg></div>
+      <div class="c-big" style="font-size:46px;white-space:normal">Formulário curto</div>
+      <div class="c-sub">o pedido de cotação</div>
+    </div>
+  </div>
+  <div class="cue r">Corretor não precisa de efeito especial. <b>Precisa ser achado e chamado.</b></div>
+</section>
+
+
+
+<section class="slide" data-section="Pesquise" data-title="Busca: criar e publicar site">
+  <div class="glow g-c"></div>
+  <div class="frame l-search">
+    <div class="lupa r pop"><svg class="ic"><use href="#i-search"/></svg></div>
+    <div class="qs">
+      <div class="q-label r">Pesquise agora no YouTube</div>
+      <div class="q-box r">como criar um site animado com o Claude<span class="caret"></span></div>
+      <div class="q-box r">como publicar site feito no Claude</div>
+      <div class="q-foot r">Um ensina a fazer. O outro, a pôr no ar. <b>Eu espero.</b></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 05-cap5-agente.html ===== -->
+<section class="slide" data-fundo="cena:c5" data-tag="Capítulo 5 de 9" data-station="5/9" data-title="Capítulo 5 — O que é um agente">
+  <div class="glow g-br"></div>
+  <div class="frame l-act">
+    <div class="act-n r">Capítulo 5 de 9</div>
+    <h2 class="act-t r">O que é<br><span class="teal">um agente</span></h2>
+    <div class="act-bar"></div>
+    <p class="sub r">O ponto da tarde. <b>É aqui que tudo se junta.</b></p>
+  </div>
+</section>
+
+<section class="slide" data-section="O que é um agente" data-tag="Em uma frase" data-title="Regras + habilidades + personalizações">
+  <div class="glow g-tl"></div>
+  <div class="frame l-flow stack">
+    <div class="step r"><div class="ic-circle"><svg class="ic"><use href="#i-shield"/></svg></div><div class="lbl" style="font-size:42px">Regras<small>o que ele faz e<br>o que nunca faz</small></div></div>
+    <div class="arrow r" style="font:900 80px/1 var(--f-display)">+</div>
+    <div class="step r"><div class="ic-circle"><svg class="ic"><use href="#i-sparkles"/></svg></div><div class="lbl" style="font-size:42px">Habilidades<small>o passo a passo<br>de cada tarefa</small></div></div>
+    <div class="arrow r" style="font:900 80px/1 var(--f-display)">+</div>
+    <div class="step r"><div class="ic-circle"><svg class="ic"><use href="#i-user"/></svg></div><div class="lbl" style="font-size:42px">Personalizações<small>seu nome, seu jeito,<br>seus sistemas</small></div></div>
+    <div class="arrow r" style="font:900 80px/1 var(--f-display)">=</div>
+    <div class="step r"><div class="ic-circle" style="box-shadow:0 0 0 2px var(--teal),0 0 90px rgba(26,188,156,.3)"><svg class="ic"><use href="#i-folder"/></svg></div><div class="lbl" style="font-size:42px;color:var(--teal)">Uma pasta<small>tudo isso, salvo<br>e pronto para ler</small></div></div>
+  </div>
+</section>
+
+<section class="slide" data-fundo="cena:s74" data-section="O que é um agente" data-tag="Como ele nasce" data-title="Leia esta pasta">
+  <div class="glow g-bl"></div>
+  <div class="frame l-quote">
+    <p class="q r">Leia esta pasta e <em>instale</em> o agente.</p>
+    <p class="sub r">Você manda o Claude ler. Ele entende tudo, e <b>aquela conversa vira o próprio agente</b>.</p>
+  </div>
+</section>
+
+<section class="slide" data-fundo="cena:s75" data-section="O que é um agente" data-tag="O que vocês recebem hoje" data-title="Um funcionário já treinado">
+  <div class="glow g-tl"></div>
+  <div class="frame l-split">
+    <div class="txt">
+      <div class="kicker r">O que vocês recebem hoje</div>
+      <div class="h-l r">Um funcionário</div>
+      <div class="h-l teal r">já treinado por mim.</div>
+      <p class="sub r">Na verdade, dois: <b>o copiloto do corretor</b> e <b>o assistente 24 h do supervisor</b>.</p>
+    </div>
+    <div class="vis r pop"><div class="ic-circle lg"><svg class="ic"><use href="#i-user"/></svg></div></div>
+  </div>
+</section>
+
+<section class="slide" data-section="O que é um agente" data-tag="O assistente 24 h do supervisor" data-title="O que o assistente do supervisor faz">
+  <div class="frame l-cards" style="gap:24px">
+    <div class="card r"><div class="c-ic"><svg class="ic"><use href="#i-globe"/></svg></div><div><div class="c-big" style="font-size:44px;white-space:normal;line-height:1.08">Entra nos portais</div><div class="c-sub">Qualicorp, QV, Amil… <b>no seu Chrome, com o seu login</b></div></div></div>
+    <div class="card r"><div class="c-ic"><svg class="ic"><use href="#i-eye"/></svg></div><div><div class="c-big" style="font-size:44px;white-space:normal;line-height:1.08">Confere o status</div><div class="c-sub">de cada proposta da equipe: <b>implantou? voltou?</b></div></div></div>
+    <div class="card r"><div class="c-ic"><svg class="ic"><use href="#i-clipboard"/></svg></div><div><div class="c-big" style="font-size:44px;white-space:normal;line-height:1.08">Dá entrada</div><div class="c-sub">do jeito da sua empresa: <b>na primeira vez, você ensina</b></div></div></div>
+    <div class="card r"><div class="c-ic"><svg class="ic"><use href="#i-bell"/></svg></div><div><div class="c-big" style="font-size:44px;white-space:normal;line-height:1.08">Acha as pendências</div><div class="c-sub">e escreve o aviso <b>do corretor daquela proposta</b></div></div></div>
+    <div class="card hi r"><div class="c-ic"><svg class="ic"><use href="#i-file"/></svg></div><div><div class="c-big" style="font-size:44px;white-space:normal;line-height:1.08">Resume e organiza</div><div class="c-sub">tudo pronto para você, <b>às 7 da manhã</b></div></div></div>
+  </div>
+  <div class="cue r">A ronda que você faz no F5, feita por ele. <b>E entregue organizada.</b></div>
+</section>
+
+<section class="slide" data-section="O que é um agente" data-tag="O copiloto do corretor" data-title="O que o copiloto do corretor faz">
+  <div class="frame" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:1fr 1fr;gap:22px">
+    <div class="card hi r" style="flex-direction:row;align-items:center;justify-content:flex-start;gap:28px;padding:26px 36px"><div class="c-ic"><svg class="ic"><use href="#i-calc"/></svg></div><div><div class="c-big" style="font-size:42px;white-space:normal;line-height:1.08;margin-top:0">Cota</div><div class="c-sub" style="margin-top:10px">no simulador, do jeito que você fala: <b>"46 anos no Méier"</b></div></div></div>
+    <div class="card r" style="flex-direction:row;align-items:center;justify-content:flex-start;gap:28px;padding:26px 36px"><div class="c-ic"><svg class="ic"><use href="#i-sparkles"/></svg></div><div><div class="c-big" style="font-size:42px;white-space:normal;line-height:1.08;margin-top:0">Dá dicas de venda</div><div class="c-sub" style="margin-top:10px">o que oferecer, como contornar a objeção: <b>para você vender</b></div></div></div>
+    <div class="card r" style="flex-direction:row;align-items:center;justify-content:flex-start;gap:28px;padding:26px 36px"><div class="c-ic"><svg class="ic"><use href="#i-question"/></svg></div><div><div class="c-big" style="font-size:42px;white-space:normal;line-height:1.08;margin-top:0">Tira as suas dúvidas</div><div class="c-sub" style="margin-top:10px">carência, coparticipação, rede. <b>Sem inventar valor.</b></div></div></div>
+    <div class="card r" style="flex-direction:row;align-items:center;justify-content:flex-start;gap:28px;padding:26px 36px"><div class="c-ic"><svg class="ic"><use href="#i-alarm"/></svg></div><div><div class="c-big" style="font-size:42px;white-space:normal;line-height:1.08;margin-top:0">Lembra o retorno</div><div class="c-sub" style="margin-top:10px">de manhã: <b>"o que tem pra hoje?"</b></div></div></div>
+    <div class="card r" style="flex-direction:row;align-items:center;justify-content:flex-start;gap:28px;padding:26px 36px"><div class="c-ic"><svg class="ic"><use href="#i-link"/></svg></div><div><div class="c-big" style="font-size:42px;white-space:normal;line-height:1.08;margin-top:0">Aprende o novo</div><div class="c-sub" style="margin-top:10px">simulador novo? <b>"me manda o link que eu aprendo"</b></div></div></div>
+    <div class="card r" style="flex-direction:row;align-items:center;justify-content:flex-start;gap:28px;padding:26px 36px"><div class="c-ic"><svg class="ic"><use href="#i-send"/></svg></div><div><div class="c-big" style="font-size:42px;white-space:normal;line-height:1.08;margin-top:0">Fala com o cliente</div><div class="c-sub" style="margin-top:10px">só se você pedir: abre o WhatsApp Web e envia. <b>Nada sai sem o seu ok.</b></div></div></div>
+  </div>
+  <div class="cue r">Ele trabalha <b>para o corretor</b>. Com o cliente, só quando você pede.</div>
+</section>
+
+<section class="slide" data-section="O que é um agente" data-tag="Como funciona" data-title="Descreve, ele planeja, faz e avisa">
+  <div class="glow g-tr"></div>
+  <div class="frame l-flow">
+    <div class="step r"><div class="ic-circle"><svg class="ic"><use href="#i-chat"/></svg></div><div class="lbl">Descreve<small>o resultado,<br>numa frase</small></div></div>
+    <div class="arrow r"><svg class="ic"><use href="#i-arrow"/></svg></div>
+    <div class="step r"><div class="ic-circle"><svg class="ic"><use href="#i-clipboard"/></svg></div><div class="lbl">Plano<small>e pergunta<br>o que faltou</small></div></div>
+    <div class="arrow r"><svg class="ic"><use href="#i-arrow"/></svg></div>
+    <div class="step r"><div class="ic-circle"><svg class="ic"><use href="#i-cpu"/></svg></div><div class="lbl">Trabalha<small>sozinho:<br>você pode sair</small></div></div>
+    <div class="arrow r"><svg class="ic"><use href="#i-arrow"/></svg></div>
+    <div class="step r"><div class="ic-circle"><svg class="ic"><use href="#i-bell"/></svg></div><div class="lbl">Avisa<small>pronto, ou<br>"preciso de você"</small></div></div>
+  </div>
+  <div class="cue r">Você descreve, vai tomar um café e <b>volta com o trabalho pronto</b>.</div>
+</section>
+
+<section class="slide" data-fundo="cena:s79" data-section="O que é um agente" data-tag="Claude in Chrome" data-title="Ele usa o navegador como você">
+  <div class="glow g-tl"></div>
+  <div class="frame l-split rev">
+    <div class="txt">
+      <div class="h-xl r">Abre, clica,</div>
+      <div class="h-xl teal r">digita, preenche.</div>
+      <p class="sub r">Como você faria. <b>No seu Chrome, com o seu login.</b></p>
+    </div>
+    <div class="vis r pop"><div class="ic-circle lg"><svg class="ic"><use href="#i-globe"/></svg></div></div>
+  </div>
+  <div class="cue r">No seu Chrome, logado por você. <b>A senha é sempre você.</b></div>
+</section>
+
+<section class="slide" data-fundo="filme:f5" data-section="O que é um agente" data-tag="A pastinha" data-title="A pastinha voltou">
+  <div class="glow g-c"></div>
+  <div class="frame l-split rev">
+    <div class="txt">
+      <div class="kicker r">Lembra da pastinha de 2 kg?</div>
+      <div class="h-xl r">Ela voltou.</div>
+      <div class="h-xl teal r">Trabalhando.</div>
+      <p class="sub r">Os dois funcionários <b>vêm numa pasta</b>. Dentro dela, tudo o que eles precisam saber.</p>
+    </div>
+    <div class="vis r pop"><div class="ic-circle lg"><svg class="ic"><use href="#i-folder"/></svg></div></div>
+  </div>
+</section>
+
+<section class="slide" data-section="O que é um agente" data-tag="Dentro da pasta" data-title="O que tem na pasta">
+  <div class="frame l-cards" style="gap:28px">
+    <div class="card r" style="justify-content:flex-start;gap:12px;padding:28px 34px"><div class="c-ic"><svg class="ic"><use href="#i-shield"/></svg></div><div class="c-big" style="font-size:44px;white-space:normal;line-height:1.05;margin-top:4px">Regras</div><div class="c-sub" style="margin-top:0;min-height:74px">o que ele faz e o que <b>nunca</b> faz</div><div class="c-top" style="margin-top:8px">Por exemplo</div><ul style="margin:6px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:12px;font:400 26px/1.3 var(--f-body);color:var(--ink)"><li><span style="color:var(--teal);font-weight:800">›</span> Senha? Nunca digita.</li><li><span style="color:var(--teal);font-weight:800">›</span> Nada sai sem o seu "pode mandar".</li><li><span style="color:var(--teal);font-weight:800">›</span> Valor, só da tabela vigente.</li></ul></div>
+    <div class="card r" style="justify-content:flex-start;gap:12px;padding:28px 34px"><div class="c-ic"><svg class="ic"><use href="#i-sparkles"/></svg></div><div class="c-big" style="font-size:44px;white-space:normal;line-height:1.05;margin-top:4px">Skills</div><div class="c-sub" style="margin-top:0;min-height:74px">o passo a passo de cada tarefa, <b>em português</b></div><div class="c-top" style="margin-top:8px">Por exemplo</div><ul style="margin:6px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:12px;font:400 26px/1.3 var(--f-body);color:var(--ink)"><li><span style="color:var(--teal);font-weight:800">›</span> Fazer a ronda nos portais.</li><li><span style="color:var(--teal);font-weight:800">›</span> Ler a tabela da operadora.</li><li><span style="color:var(--teal);font-weight:800">›</span> Criar o anúncio.</li></ul></div>
+    <div class="card hi r" style="justify-content:flex-start;gap:12px;padding:28px 34px"><div class="c-ic"><svg class="ic"><use href="#i-layers"/></svg></div><div class="c-big" style="font-size:44px;white-space:normal;line-height:1.05;margin-top:4px">Plugins</div><div class="c-sub" style="margin-top:0;min-height:74px">várias skills num <b>pacote só</b>, que instala de uma vez</div><div class="c-top" style="margin-top:8px">Por exemplo</div><ul style="margin:6px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:12px;font:400 26px/1.3 var(--f-body);color:var(--ink)"><li><span style="color:var(--teal);font-weight:800">›</span> Seu Copiloto: um arquivo só.</li><li><span style="color:var(--teal);font-weight:800">›</span> Cotação, retorno e WhatsApp.</li><li><span style="color:var(--teal);font-weight:800">›</span> Instala com uma frase.</li></ul></div>
+    <div class="card r" style="justify-content:flex-start;gap:12px;padding:28px 34px"><div class="c-ic"><svg class="ic"><use href="#i-folder"/></svg></div><div class="c-big" style="font-size:44px;white-space:normal;line-height:1.05;margin-top:4px">Materiais</div><div class="c-sub" style="margin-top:0;min-height:74px">o que ele <b>consulta</b> para trabalhar</div><div class="c-top" style="margin-top:8px">Por exemplo</div><ul style="margin:6px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:12px;font:400 26px/1.3 var(--f-body);color:var(--ink)"><li><span style="color:var(--teal);font-weight:800">›</span> Logos das operadoras.</li><li><span style="color:var(--teal);font-weight:800">›</span> A lista dos seus portais.</li><li><span style="color:var(--teal);font-weight:800">›</span> 1.022 hospitais por bairro.</li></ul></div>
+  </div>
+</section>
+
+<section class="slide" data-section="O que é um agente" data-tag="O que vocês levam hoje" data-title="Dois agentes e um bônus">
+  <div class="glow g-tl"></div>
+  <div class="frame" style="flex-direction:column;justify-content:center;gap:34px">
+    <div class="h-l r" style="font-size:88px">Dois agentes treinados. <span class="teal">E um bônus.</span></div>
+    <div style="display:flex;gap:30px;align-items:stretch">
+      <div class="card r" style="justify-content:flex-start;gap:16px;padding:34px 38px"><span class="badge">Supervisor</span><div class="c-ic"><svg class="ic"><use href="#i-eye"/></svg></div><div class="c-big" style="font-size:46px;white-space:normal;line-height:1.05;margin-top:4px;min-height:97px;display:flex;align-items:flex-end">Agente do Supervisor</div><div class="c-sub" style="margin-top:0">Entra nos portais, confere o status, <b>dá entrada</b>, cadastra proposta e resume tudo às 7h.</div></div>
+      <div class="card r" style="justify-content:flex-start;gap:16px;padding:34px 38px"><span class="badge">Corretor</span><div class="c-ic"><svg class="ic"><use href="#i-calc"/></svg></div><div class="c-big" style="font-size:46px;white-space:normal;line-height:1.05;margin-top:4px;min-height:97px;display:flex;align-items:flex-end">Seu Copiloto</div><div class="c-sub" style="margin-top:0">Cota no simulador, <b>dá dicas de venda</b>, tira as suas dúvidas e lembra o retorno.</div></div>
+      <div class="card hi r" style="justify-content:flex-start;gap:16px;padding:34px 38px"><span class="badge">Bônus</span><div class="c-ic"><svg class="ic"><use href="#i-image"/></svg></div><div class="c-big" style="font-size:46px;white-space:normal;line-height:1.05;margin-top:4px;min-height:97px;display:flex;align-items:flex-end">Agente de Imagens</div><div class="c-sub" style="margin-top:0">Pega a tabela da operadora e <b>cria o anúncio</b>. E o carrossel do Instagram.</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-section="O que é um agente" data-tag="Instalar" data-title="Instalar em 4 passos">
+  <div class="glow g-tl"></div>
+  <div class="frame l-flow stack">
+    <div class="step r"><div class="ic-circle"><svg class="ic"><use href="#i-download"/></svg></div><div class="lbl">Baixa<small>de graça, na<br>página da palestra</small></div></div>
+    <div class="arrow r"><svg class="ic"><use href="#i-arrow"/></svg></div>
+    <div class="step r"><div class="ic-circle"><svg class="ic"><use href="#i-folder"/></svg></div><div class="lbl">Abre<small>no Claude, e<br>entrega a pasta</small></div></div>
+    <div class="arrow r"><svg class="ic"><use href="#i-arrow"/></svg></div>
+    <div class="step r"><div class="ic-circle"><svg class="ic"><use href="#i-chat"/></svg></div><div class="lbl">Pede<small>"instale",<br>numa frase</small></div></div>
+    <div class="arrow r"><svg class="ic"><use href="#i-arrow"/></svg></div>
+    <div class="step r"><div class="ic-circle"><svg class="ic"><use href="#i-question"/></svg></div><div class="lbl">Responde<small>a entrevista, uma<br>pergunta por vez</small></div></div>
+  </div>
+  <div class="cue r">Baixa, abre, pede e responde. <b>Ninguém programa nada.</b></div>
+</section>
+
+<section class="slide" data-fundo="cena:s84" data-section="O que é um agente" data-tag="Quem manda é você" data-title="Só a pasta que você liberar">
+  <div class="glow g-c"></div>
+  <div class="frame l-flow stack">
+    <div class="step r"><div class="ic-circle"><svg class="ic"><use href="#i-folder"/></svg></div><div class="lbl">Só a sua pasta<small>ele só lê e grava na pasta que você liberar</small></div></div>
+    <div class="step r"><div class="ic-circle"><svg class="ic"><use href="#i-hand"/></svg></div><div class="lbl">Pergunta antes<small>você escolhe quanto ele pode fazer sem perguntar</small></div></div>
+    <div class="step r"><div class="ic-circle"><svg class="ic"><use href="#i-shield"/></svg></div><div class="lbl">Dinheiro e mensagem<small>quem confere é você</small></div></div>
+  </div>
+</section>
+
+<section class="slide" data-section="Pesquise" data-title="Busca: agentes e Cowork">
+  <div class="glow g-c"></div>
+  <div class="frame l-search">
+    <div class="lupa r pop"><svg class="ic"><use href="#i-search"/></svg></div>
+    <div class="qs">
+      <div class="q-label r">Pesquise agora no YouTube</div>
+      <div class="q-box r">o que são agentes de IA<span class="caret"></span></div>
+      <div class="q-box r">Claude Cowork como usar</div>
+      <div class="q-foot r">Cowork é o nome do Claude que trabalha sozinho. <b>Eu espero.</b></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 06-cap6-corretor.html ===== -->
+<section class="slide" data-fundo="cena:c6" data-tag="Capítulo 6 de 9" data-station="6/9" data-title="Capítulo 6 — O agente do corretor">
+  <div class="glow g-br"></div>
+  <div class="frame l-act">
+    <div class="act-n r">Capítulo 6 de 9</div>
+    <h2 class="act-t r">O agente<br><span class="teal">do corretor</span></h2>
+    <div class="act-bar"></div>
+    <p class="sub r">O trabalho do corretor, <b>feito para o corretor</b>.</p>
+  </div>
+</section>
+
+<section class="slide" data-fundo="cena:e4" data-section="O agente do corretor" data-tag="O exemplo da tarde" data-title="Marta, 46, Méier">
+  <div class="glow g-tl"></div>
+  <div class="frame l-split">
+    <div class="txt">
+      <div class="kicker r">Um exemplo, do começo ao fim</div>
+      <div class="h-l r">Marta, 46.</div>
+      <div class="h-l teal r">Mora no Méier.</div>
+      <p class="sub r">Viu um anúncio, pediu cotação e <b>quer um hospital perto de casa</b>.</p>
+    </div>
+    <div class="vis r pop"><div class="ic-circle lg"><svg class="ic"><use href="#i-user"/></svg></div></div>
+  </div>
+</section>
+
+<section class="slide" data-fundo="cena:s88" data-section="Agente de Imagens" data-title="Tabela vira anúncio">
+  <div class="glow g-c"></div>
+  <div class="frame l-stmt center">
+    <div class="kicker r">Primeiro, um presente · lembra da pastinha?</div>
+    <div class="h-xl r">Tabela vira</div>
+    <div class="h-xl teal r">anúncio.</div>
+    <p class="sub r">A tabela que pesava na pastinha vira anúncio em minutos, <b>com a sua cara</b>.</p>
+  </div>
+</section>
+
+<section class="slide" data-section="Agente de Imagens" data-tag="Recebe · faz · devolve" data-title="Tabela → pergunta → anúncio">
+  <div class="glow g-tl"></div>
+  <div class="frame l-flow">
+    <div class="step r"><div class="ic-circle"><svg class="ic"><use href="#i-table"/></svg></div><div class="lbl">Tabela<small>a da operadora, como vem</small></div></div>
+    <div class="arrow r"><svg class="ic"><use href="#i-arrow"/></svg></div>
+    <div class="step r"><div class="ic-circle"><svg class="ic"><use href="#i-question"/></svg></div><div class="lbl">Pergunta<small>pra quem? qual hospital?</small></div></div>
+    <div class="arrow r"><svg class="ic"><use href="#i-arrow"/></svg></div>
+    <div class="step r"><div class="ic-circle"><svg class="ic"><use href="#i-image"/></svg></div><div class="lbl">Anúncio<small>pronto, com a sua cara</small></div></div>
+  </div>
+  <div class="cue r">Você manda a tabela, ele pergunta antes de criar <b>e devolve o anúncio pronto.</b></div>
+</section>
+
+<section class="slide" data-section="Agente de Imagens" data-tag="Antes de criar, ele pergunta" data-title="O briefing">
+  <div class="frame l-mosaic" style="--cols:3">
+    <div class="tile hi r"><svg class="ic"><use href="#i-users"/></svg>Pra quem?</div>
+    <div class="tile r"><svg class="ic"><use href="#i-hospital"/></svg>Qual hospital?</div>
+    <div class="tile r"><svg class="ic"><use href="#i-clipboard"/></svg>Qual plano?</div>
+    <div class="tile r"><svg class="ic"><use href="#i-table"/></svg>Chamada ou tabela?</div>
+    <div class="tile r"><svg class="ic"><use href="#i-layout"/></svg>Qual formato?</div>
+    <div class="tile r"><svg class="ic"><use href="#i-phone"/></svg>Seu contato?</div>
+  </div>
+  <div class="cue r">É o briefing que ninguém faz: <b>pra quem é esse anúncio?</b></div>
+</section>
+
+<section class="slide" data-fundo="cena:s91" data-section="Agente de Imagens" data-title="O estagiário">
+  <div class="glow g-br"></div>
+  <div class="frame l-quote">
+    <p class="q r">O Claude contratou o ChatGPT como <em>estagiário</em>.</p>
+    <div class="who r">Ele usa a melhor ferramenta pra cada trabalho</div>
+  </div>
+</section>
+
+<section class="slide" data-section="Agente de Imagens" data-title="Seu navegador, seu login">
+  <div class="glow g-tl"></div>
+  <div class="frame l-split rev">
+    <div class="txt">
+      <div class="h-l r">Seu navegador.</div>
+      <div class="h-l teal r">Seu login.</div>
+      <p class="sub r">Tudo no seu Chrome, logado por você.<br><b>Sem API, sem senha digitada por ele.</b></p>
+    </div>
+    <div class="vis r"><figure class="shot"><img src="assets/web/claude-in-chrome.png" alt="Página oficial do Claude in Chrome: A helping hand across all your tabs"></figure></div>
+  </div>
+</section>
+
+<section class="slide" data-fundo="cena:s93" data-section="Agente de Imagens" data-tag="Ele pergunta" data-title="A partir de × tabela completa">
+  <div class="glow g-tr"></div>
+  <div class="frame l-split">
+    <div class="txt">
+      <div class="h-l r">Chamada</div>
+      <div class="h-l teal r">ou tabela?</div>
+      <p class="sub r">Ele pergunta qual.<br><b>O preço tem que bater com a tabela vigente.</b></p>
+    </div>
+    <div class="vis">
+      <div class="card hi r" style="flex:none;width:340px;height:425px;justify-content:center"><div class="c-top">Post A</div><div class="c-sub">a partir de</div><div class="c-big" style="margin-top:6px">R$ X*</div><div class="c-sub" style="font-size:20px">*faixa e perfil no rodapé</div></div>
+      <div class="card r" style="flex:none;width:340px;height:425px;justify-content:center"><div class="c-top">Post B</div><div class="c-sub">tabela completa</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px"><i style="height:30px;border-radius:6px;background:var(--dim)"></i><i style="height:30px;border-radius:6px;background:var(--dim)"></i><i style="height:30px;border-radius:6px;background:var(--dim)"></i><i style="height:30px;border-radius:6px;background:var(--dim)"></i><i style="height:30px;border-radius:6px;background:var(--dim)"></i><i style="height:30px;border-radius:6px;background:var(--dim)"></i><i style="height:30px;border-radius:6px;background:var(--dim)"></i><i style="height:30px;border-radius:6px;background:var(--dim)"></i><i style="height:30px;border-radius:6px;background:var(--dim)"></i><i style="height:30px;border-radius:6px;background:var(--dim)"></i></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-section="Agente de Imagens" data-tag="Pasta de logos no pacote" data-title="Logos das operadoras">
+  <div class="frame l-mosaic" style="--cols:5">
+    <div class="tile logo r"><img src="assets/logos/amil.png" alt="Amil"></div>
+    <div class="tile logo r"><img src="assets/logos/leve-saude.png" alt="Leve Saúde"></div>
+    <div class="tile logo r"><img src="assets/logos/medsenior.png" alt="MedSênior"></div>
+    <div class="tile r"><img src="assets/logos/assim-saude-branco.png" alt="Assim Saúde"></div>
+    <div class="tile logo r"><img src="assets/logos/sulamerica.png" alt="SulAmérica"></div>
+    <div class="tile logo r"><img src="assets/logos/klini-saude.png" alt="Klini Saúde"></div>
+    <div class="tile logo r"><img src="assets/logos/porto.png" alt="Porto"></div>
+    <div class="tile logo r"><img src="assets/logos/hapvida.png" alt="Hapvida"></div>
+    <div class="tile r"><img src="assets/logos/notredame-saude-branco.png" alt="NotreDame Intermédica"></div>
+    <div class="tile logo r"><img src="assets/logos/bradesco-saude.png" alt="Bradesco Saúde"></div>
+    <div class="tile logo r"><img src="assets/logos/prevent-senior.png" alt="Prevent Senior"></div>
+    <div class="tile logo r"><img src="assets/logos/samoc-saude.png" alt="Samoc Saúde"></div>
+    <div class="tile logo r"><img src="assets/logos/select-saude.png" alt="Select Saúde"></div>
+    <div class="tile logo r"><img src="assets/logos/unimed.png" alt="Unimed"></div>
+    <div class="tile logo r"><img src="assets/logos/grupo-assim.png" alt="Grupo Assim"></div>
+  </div>
+  <div class="cue r">A pasta de logos das operadoras vem no pacote. <b>O agente já sabe usar.</b></div>
+</section>
+
+<section class="slide" data-fundo="cena:s95" data-section="Agente de Imagens" data-title="Baixe na página">
+  <div class="glow g-bl"></div>
+  <div class="frame l-stmt">
+    <div class="kicker r">O presente</div>
+    <div class="h-xl r">De graça.</div>
+    <p class="sub r">O Agente de Imagens é um presente para o corretor. <b>O endereço eu mostro no final.</b></p>
+  </div>
+</section>
+
+<section class="slide" data-section="Pesquise" data-title="Pesquise — imagens no ChatGPT">
+  <div class="glow g-c"></div>
+  <div class="frame l-search">
+    <div class="lupa r pop"><svg class="ic"><use href="#i-search"/></svg></div>
+    <div class="qs">
+      <div class="q-label r">Pesquise agora no YouTube</div>
+      <div class="q-box r">como criar imagens no ChatGPT<span class="caret"></span></div>
+      <div class="q-box again r">Claude in Chrome como usar</div>
+      <div class="q-foot r">A segunda? <b>Lembra dessa?</b> Pesquisa de novo.</div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-section="Seu Instagram" data-tag="Carrossel" data-title="Eu escrevi este livro">
+  <div class="glow g-tl"></div>
+  <div class="frame l-stmt center">
+    <div class="kicker r">Eu escrevi este livro</div>
+    <img class="r pop" src="assets/livro-capa.png" alt="Capa do livro Desinstale seu Instagram" style="height:400px;border-radius:14px;box-shadow:0 30px 80px #000">
+    <p class="sub r">Um livro inteiro sobre <b>largar o Instagram</b>.</p>
+  </div>
+</section>
+
+<section class="slide plain" data-fundo="cena:s98" data-section="Seu Instagram" data-title="Calma.">
+  <div class="frame l-stmt center">
+    <div class="h-xxl r pop">Calma.</div>
+    <p class="sub r">Eu não mudei de ideia. <b>Mudei quem abre o aplicativo.</b></p>
+  </div>
+</section>
+
+<section class="slide" data-fundo="cena:s99" data-section="Seu Instagram" data-tag="A promessa" data-title="Ele faz. Você posta.">
+  <div class="glow g-tr"></div>
+  <div class="frame l-split">
+    <div class="txt">
+      <div class="h-xl r">Ele faz.</div>
+      <div class="h-xl teal r">Você posta.</div>
+      <p class="sub r">Ele faz o carrossel inteiro. Você só aperta <b>postar</b>: dez segundos.</p>
+    </div>
+    <div class="vis"><div class="ic-circle lg r pop"><svg class="ic"><use href="#i-hand"/></svg></div></div>
+  </div>
+</section>
+
+<section class="slide" data-section="Seu Instagram" data-tag="Recebe · faz · devolve" data-title="Carrossel: recebe, faz, devolve">
+  <div class="glow g-tl"></div>
+  <div class="frame l-flow">
+    <div class="step r"><div class="ic-circle"><svg class="ic"><use href="#i-chat"/></svg></div><div class="lbl">Tema<small>"um carrossel sobre carência"</small></div></div>
+    <div class="arrow r"><svg class="ic"><use href="#i-arrow"/></svg></div>
+    <div class="step r"><div class="ic-circle"><svg class="ic"><use href="#i-pencil"/></svg></div><div class="lbl">Prévia<small>você ajusta, como ajusta gente</small></div></div>
+    <div class="arrow r"><svg class="ic"><use href="#i-arrow"/></svg></div>
+    <div class="step r"><div class="ic-circle"><svg class="ic"><use href="#i-phone"/></svg></div><div class="lbl">Imagens<small>no tamanho do feed, prontas</small></div></div>
+  </div>
+  <div class="cue r">O Agente de Imagens da página já faz. <b>Seu jeito, você ensina uma vez.</b></div>
+</section>
+
+<section class="slide" data-section="Seu Instagram" data-tag="Ideias de carrossel" data-title="Ideias de carrossel">
+  <div class="frame l-mosaic" style="--cols:2;grid-auto-rows:230px">
+    <div class="tile r" style="color:var(--ink)"><span>5 coisas que ninguém te conta<br>sobre carência</span></div>
+    <div class="tile hi r">Coparticipação: vilã ou heroína?</div>
+    <div class="tile r" style="color:var(--ink)">Plano de saúde para MEI: pode?</div>
+    <div class="tile r" style="color:var(--ink)">O que muda aos 59 anos</div>
+  </div>
+  <div class="cue r">A pergunta que vocês respondem vinte vezes no WhatsApp <b>vira carrossel</b>.</div>
+</section>
+
+<section class="slide" data-fundo="cena:s102" data-section="Seu Instagram" data-title="Anúncio vende, carrossel ensina">
+  <div class="glow g-c"></div>
+  <div class="frame l-cards">
+    <div class="card r">
+      <div class="c-ic"><svg class="ic"><use href="#i-image"/></svg></div>
+      <div><div class="c-top">Agente de Imagens</div><div class="c-big" style="font-size:110px">Vende.</div></div>
+      <div class="c-sub">o anúncio, a partir da tabela</div>
+    </div>
+    <div class="card hi r">
+      <div class="c-ic"><svg class="ic"><use href="#i-layers"/></svg></div>
+      <div><div class="c-top">Carrossel</div><div class="c-big" style="font-size:110px">Ensina.</div></div>
+      <div class="c-sub">o conteúdo educativo, com o jeito que você ensinou</div>
+    </div>
+  </div>
+  <div class="cue r">Os dois saem do agente da página. <b>Trabalham enquanto você atende.</b></div>
+</section>
+
+<section class="slide" data-fundo="cena:s103" data-section="Seu Instagram" data-tag="Skill · capítulo 8" data-title="Isso tem nome: skill">
+  <div class="glow g-tr"></div>
+  <div class="frame l-split">
+    <div class="txt">
+      <div class="kicker r">O seu jeito, ensinado uma vez</div>
+      <div class="h-xl r" style="font-size:128px">Isso tem nome:</div>
+      <div class="h-xl teal r" style="font-size:128px">skill.</div>
+      <p class="sub r">É o Claude repetindo o seu jeito, sem você explicar de novo. <b>A gente fala dela no capítulo 8.</b></p>
+    </div>
+    <div class="vis r pop"><div class="ic-circle lg"><svg class="ic"><use href="#i-sparkles"/></svg></div></div>
+  </div>
+  <div class="cue r">Guardem essa palavra: skill. <b>Ela volta no capítulo 8, No automático.</b></div>
+</section>
+
+<section class="slide" data-section="Pesquise" data-title="Busca: carrossel e skill">
+  <div class="glow g-c"></div>
+  <div class="frame l-search">
+    <div class="lupa r pop"><svg class="ic"><use href="#i-search"/></svg></div>
+    <div class="qs">
+      <div class="q-label r">Pesquise agora no YouTube</div>
+      <div class="q-box r">carrossel com Claude<span class="caret"></span></div>
+      <div class="q-box r">como instalar skill no Claude</div>
+      <div class="q-foot r">Celular na mão. <b>Eu espero.</b></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-section="Seu Copiloto" data-tag="No simulador" data-title="Seu Copiloto">
+  <div class="glow g-tr"></div>
+  <div class="frame l-split">
+    <div class="txt">
+      <div class="kicker r">Só do corretor</div>
+      <div class="h-xl r">Seu</div>
+      <div class="h-xl teal r">Copiloto.</div>
+      <p class="sub r">Uso todo dia: cotação, atendimento, retornos e simulador novo. <b>Só do corretor.</b></p>
+    </div>
+    <div class="vis r pop">
+      <div style="width:420px;height:420px;border-radius:50%;background:#F4F6F5;display:grid;place-items:center;box-shadow:0 0 0 2px var(--teal-line),0 0 110px rgba(26,188,156,.28)"><img src="assets/copiloto-logo.png" alt="Seu Copiloto" style="width:320px;height:320px"></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-fundo="cena:s106" data-section="Seu Copiloto" data-tag="Recebe · faz · devolve" data-title="46 anos no Méier">
+  <div class="glow g-tl"></div>
+  <div class="frame l-flow">
+    <div class="step r"><div class="ic-circle"><svg class="ic"><use href="#i-chat"/></svg></div><div class="lbl">Pede<small>"cota pra 46 anos<br>no Méier"</small></div></div>
+    <div class="arrow r"><svg class="ic"><use href="#i-arrow"/></svg></div>
+    <div class="step r"><div class="ic-circle"><svg class="ic"><use href="#i-cpu"/></svg></div><div class="lbl">Faz<small>simulador + bairro<br>+ conferência</small></div></div>
+    <div class="arrow r"><svg class="ic"><use href="#i-arrow"/></svg></div>
+    <div class="step r"><div class="ic-circle"><svg class="ic"><use href="#i-send"/></svg></div><div class="lbl">Devolve<small>PDF no seu WhatsApp<br>+ retorno anotado</small></div></div>
+  </div>
+  <div class="cue r">Peço do jeito que falo. Ele cota, <b>confere o PDF</b> e me manda no WhatsApp.</div>
+</section>
+
+<section class="slide" data-section="Seu Copiloto" data-tag="Exemplo" data-title="Conversa: a cotação da Marta">
+  <div class="glow g-tr"></div>
+  <div class="frame l-split">
+    <div class="txt">
+      <div class="kicker r">Na prática</div>
+      <div class="h-l r">Você pede.</div>
+      <div class="h-l teal r">Ele cota.</div>
+      <p class="sub r">Do jeito que você fala. <b>Nada vai para a Marta sem o seu ok.</b></p>
+    </div>
+    <div class="vis r">
+      <div class="chat">
+        <div class="ch-top"><svg class="ic"><use href="#i-bot"/></svg>Você e o Seu Copiloto</div>
+        <div class="msg eu r">Cota pra Marta, 46, Méier. Ela quer hospital perto.</div>
+        <div class="msg ele r">Três opções que atendem o Pasteur, no Méier. PDF pronto. <b>Posso mandar?</b></div>
+        <div class="msg eu r">Pode mandar.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-fundo="cena:s108" data-section="Seu Copiloto" data-title="Hospital pelo nome">
+  <div class="glow g-br"></div>
+  <div class="frame l-split">
+    <div class="txt">
+      <div class="kicker r">Mora no Méier?</div>
+      <div class="h-l r">Hospital</div>
+      <div class="h-l teal r">Pasteur.</div>
+      <p class="sub r">Ele não fala "rede ampla": fala o hospital <b>perto do cliente</b>, pelo nome.</p>
+    </div>
+    <div class="vis r pop"><div class="ic-circle lg"><svg class="ic"><use href="#i-pin"/></svg></div></div>
+  </div>
+</section>
+
+<section class="slide" data-section="Seu Copiloto" data-tag="As filiais da New Master" data-title="Ele conhece o seu bairro">
+  <div class="glow g-tl"></div>
+  <div class="frame l-split">
+    <div class="txt">
+      <div class="kicker r">Méier · Caxias · Nova Iguaçu · Niterói</div>
+      <div class="h-l r">Ele conhece</div>
+      <div class="h-l teal r">o seu bairro.</div>
+      <p class="sub r">Em cada filial da New Master, ele fala <b>os hospitais pelo nome</b>.</p>
+    </div>
+    <div class="vis r pop"><div class="ic-circle lg"><svg class="ic"><use href="#i-map"/></svg></div></div>
+  </div>
+</section>
+
+<section class="slide" data-fundo="cena:s110" data-section="Seu Copiloto" data-tag="WhatsApp Web" data-title="No seu WhatsApp">
+  <div class="glow g-tl"></div>
+  <div class="frame l-split rev">
+    <div class="txt">
+      <div class="kicker r">A entrega</div>
+      <div class="h-l r">No seu</div>
+      <div class="h-l teal r">WhatsApp.</div>
+      <p class="sub r">Pelo <b>WhatsApp Web + Claude in Chrome</b>: sem API, sem número novo.</p>
+    </div>
+    <div class="vis">
+      <div class="ic-circle lg r pop"><svg class="ic"><use href="#i-globe"/></svg></div>
+      <div class="ic-circle lg r pop"><svg class="ic"><use href="#i-chat"/></svg></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-fundo="cena:s113" data-section="Seu Copiloto" data-tag="Retornos" data-title="O que tem pra hoje?">
+  <div class="glow g-tr"></div>
+  <div class="frame l-split">
+    <div class="txt">
+      <div class="kicker r">Todo dia de manhã</div>
+      <div class="h-l r">O que tem</div>
+      <div class="h-l teal r">pra hoje?</div>
+      <p class="sub r">Ele anota o retorno sozinho. Cotação enviada e esquecida é <b>venda perdida</b>.</p>
+    </div>
+    <div class="vis r pop"><div class="ic-circle lg"><svg class="ic"><use href="#i-bell"/></svg></div></div>
+  </div>
+</section>
+
+<section class="slide" data-section="Seu Copiloto" data-tag="Exemplo" data-title="Conversa: o que tem pra hoje">
+  <div class="glow g-tr"></div>
+  <div class="frame l-split">
+    <div class="txt">
+      <div class="kicker r">Na prática, de manhã</div>
+      <div class="h-l r">Ele lembra.</div>
+      <div class="h-l teal r">Você vende.</div>
+      <p class="sub r">E ainda <b>escreve a mensagem</b>, no seu jeito de falar.</p>
+    </div>
+    <div class="vis r">
+      <div class="chat">
+        <div class="ch-top"><svg class="ic"><use href="#i-bot"/></svg>Você e o Seu Copiloto</div>
+        <div class="msg eu r">O que tem pra hoje?</div>
+        <div class="msg ele r">3 retornos. A Marta não responde desde quinta. <b>Escrevo pra ela?</b></div>
+        <div class="msg eu r">Escreve. Me mostra antes.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-fundo="cena:s113" data-section="Seu Copiloto" data-title="Me manda o link">
+  <div class="glow g-bl"></div>
+  <div class="frame l-quote">
+    <p class="q r">Me manda o link que eu <em>aprendo</em>.</p>
+    <p class="sub r">Simulador novo? Mando o link, ele testa uma cotação e <b>passa a operar</b>.</p>
+  </div>
+</section>
+
+<section class="slide" data-fundo="cena:s114" data-section="Seu Copiloto" data-title="A pastinha">
+  <div class="glow g-tl"></div>
+  <div class="frame l-number">
+    <div class="num r">1.022</div>
+    <div class="num-label r">hospitais na pastinha.<small>342 hospitais no RJ, 680 em SP. E a pastinha não pesa 2 kg.</small></div>
+  </div>
+</section>
+
+<section class="slide" data-section="Seu Copiloto" data-tag="Quanto custa" data-title="Custo">
+  <div class="glow g-c"></div>
+  <div class="frame l-cards">
+    <div class="card hi r"><span class="badge">Só isso</span><div class="c-top">Claude Pro</div><div class="c-big">Pro</div><div class="c-sub">o plano que vocês viram no começo</div></div>
+    <div class="card r"><div class="c-top">Seu Copiloto</div><div class="c-big">R$ 0</div><div class="c-sub">na página da palestra</div></div>
+    <div class="card r"><div class="c-top">Base de hospitais</div><div class="c-big">R$ 0</div><div class="c-sub">presente pra quem está nesta sala</div></div>
+  </div>
+  <div class="cue r">Só pago o Claude. <b>Simulador de terceiros continua pedindo o seu login.</b></div>
+</section>
+
+<!-- ===== 07-cap7-supervisor.html ===== -->
+<section class="slide" data-fundo="cena:c7" data-tag="Capítulo 7 de 9" data-station="7/9" data-title="Capítulo 7 — O agente do supervisor">
+  <div class="glow g-br"></div>
+  <div class="frame l-act">
+    <div class="act-n r">Capítulo 7 de 9</div>
+    <h2 class="act-t r">O agente<br><span class="teal">do supervisor</span></h2>
+    <div class="act-bar"></div>
+    <p class="sub r">O trabalho do supervisor, <b>feito para o supervisor</b>.</p>
+  </div>
+</section>
+
+<section class="slide" data-fundo="cena:e5" data-section="Agente do Supervisor" data-title="F5 no portal">
+  <div class="glow g-tl"></div>
+  <div class="frame l-split">
+    <div class="txt">
+      <div class="kicker r">O dia do supervisor</div>
+      <div class="h-xl r">F5, F5, F5.</div>
+      <p class="sub r">O dia inteiro no portal: implantou? voltou com pendência? <b>cadê o PDF?</b></p>
+    </div>
+    <div class="vis r pop"><div class="ic-circle lg"><svg class="ic"><use href="#i-refresh"/></svg></div></div>
+  </div>
+</section>
+
+<section class="slide" data-fundo="cena:s120" data-section="Agente do Supervisor" data-tag="Só do supervisor" data-title="Agente do Supervisor">
+  <div class="glow g-tr"></div>
+  <div class="frame l-split">
+    <div class="txt">
+      <div class="kicker r">Só do supervisor</div>
+      <div class="h-l r">Agente do</div>
+      <div class="h-l teal r">Supervisor.</div>
+      <p class="sub r">Faz a ronda nos portais, dá entrada e <b>cadastra proposta nova</b>.</p>
+    </div>
+    <div class="vis r pop"><div class="ic-circle lg"><svg class="ic"><use href="#i-eye"/></svg></div></div>
+  </div>
+</section>
+
+<section class="slide" data-fundo="cena:s119" data-section="Agente do Supervisor" data-tag="Recebe · faz · devolve" data-title="Ronda, compara, avisa">
+  <div class="glow g-tr"></div>
+  <div class="frame l-flow">
+    <div class="step r"><div class="ic-circle"><svg class="ic"><use href="#i-globe"/></svg></div><div class="lbl">Ronda<small>nos portais,<br>no seu Chrome</small></div></div>
+    <div class="arrow r"><svg class="ic"><use href="#i-arrow"/></svg></div>
+    <div class="step r"><div class="ic-circle"><svg class="ic"><use href="#i-search"/></svg></div><div class="lbl">Compara<small>o que mudou desde ontem</small></div></div>
+    <div class="arrow r"><svg class="ic"><use href="#i-arrow"/></svg></div>
+    <div class="step r"><div class="ic-circle"><svg class="ic"><use href="#i-mail"/></svg></div><div class="lbl">Avisa<small>relatório das 7h<br>+ aviso pronto pro corretor</small></div></div>
+  </div>
+</section>
+
+<section class="slide" data-section="Agente do Supervisor" data-tag="O que mudou" data-title="Implantou, pendência, proposta nova">
+  <div class="glow g-c"></div>
+  <div class="frame l-cards" style="gap:28px">
+    <div class="card hi r"><div class="c-ic"><svg class="ic"><use href="#i-check"/></svg></div><div><div class="c-top">Implantou</div><div class="c-big" style="font-size:54px">Dá entrada</div><div class="c-sub">do jeito da sua empresa: <b>na 1ª vez, você ensina</b></div></div></div>
+    <div class="card r"><div class="c-ic"><svg class="ic"><use href="#i-bell"/></svg></div><div><div class="c-top">Pendência</div><div class="c-big" style="font-size:54px">Escreve</div><div class="c-sub">o aviso pro corretor <b>daquela proposta</b></div></div></div>
+    <div class="card r"><div class="c-ic"><svg class="ic"><use href="#i-question"/></svg></div><div><div class="c-top">Na dúvida</div><div class="c-big" style="font-size:54px">Pergunta</div><div class="c-sub">nome diferente, duas propostas: <b>não chuta</b></div></div></div>
+    <div class="card r"><div class="c-ic"><svg class="ic"><use href="#i-pencil"/></svg></div><div><div class="c-top">Proposta nova</div><div class="c-big" style="font-size:54px">Cadastra</div><div class="c-sub">e anexa os documentos, <b>depois que aprende com você</b></div></div></div>
+  </div>
+  <div class="trad bar r"><span class="lbl">Na 1ª vez</span><span class="fato">Cada empresa dá entrada de um jeito. <b>Você ensina uma vez</b>; depois, ele faz sozinho.</span></div>
+</section>
+
+<section class="slide" data-section="Agente do Supervisor" data-tag="Proposta nova" data-title="Cadastra a proposta">
+  <div class="glow g-tr"></div>
+  <div class="frame l-flow">
+    <div class="step r"><div class="ic-circle"><svg class="ic"><use href="#i-pencil"/></svg></div><div class="lbl">Ensina<small>uma vez,<br>em cada portal</small></div></div>
+    <div class="arrow r"><svg class="ic"><use href="#i-arrow"/></svg></div>
+    <div class="step r"><div class="ic-circle"><svg class="ic"><use href="#i-folder"/></svg></div><div class="lbl">Preenche<small>e anexa os documentos<br>da sua pasta</small></div></div>
+    <div class="arrow r"><svg class="ic"><use href="#i-arrow"/></svg></div>
+    <div class="step r"><div class="ic-circle"><svg class="ic"><use href="#i-lock"/></svg></div><div class="lbl">Pausa<small>você digita<br>CPF, RG, cartão</small></div></div>
+    <div class="arrow r"><svg class="ic"><use href="#i-arrow"/></svg></div>
+    <div class="step r"><div class="ic-circle"><svg class="ic"><use href="#i-send"/></svg></div><div class="lbl">Envia<small>só com o seu<br>"pode enviar"</small></div></div>
+  </div>
+  <div class="cue r">Você ensina uma vez. <b>Nas próximas, é uma frase.</b></div>
+</section>
+
+<section class="slide" data-fundo="cena:s123" data-section="Agente do Supervisor" data-title="Só em pendência">
+  <div class="glow g-tl"></div>
+  <div class="frame l-stmt center">
+    <div class="h-l r">Só em pendência.</div>
+    <div class="h-l teal r">Senão, silêncio.</div>
+    <p class="sub r">Pendência nova? Aviso pronto. A mesma de ontem? <b>Não repete.</b></p>
+  </div>
+</section>
+
+<section class="slide" data-fundo="cena:e6" data-section="Agente do Supervisor" data-tag="A rotina das 7h" data-title="A mensagem das 7h">
+  <div class="glow g-br"></div>
+  <div class="frame l-number">
+    <div class="num r">7h</div>
+    <div class="num-label r">Uma mensagem só.<small>As "pendências que dependem de você". Pula fim de semana.</small></div>
+  </div>
+</section>
+
+<section class="slide" data-section="Agente do Supervisor" data-tag="Exemplo" data-title="Conversa: a mensagem das 7h">
+  <div class="glow g-tr"></div>
+  <div class="frame l-split">
+    <div class="txt">
+      <div class="kicker r">7h, antes do café</div>
+      <div class="h-l r">A ronda</div>
+      <div class="h-l teal r">já feita.</div>
+      <p class="sub r">O aviso do corretor está pronto. <b>Só sobra o que depende de você.</b></p>
+    </div>
+    <div class="vis r">
+      <div class="chat">
+        <div class="ch-top"><svg class="ic"><use href="#i-eye"/></svg>Agente do Supervisor · 7h00</div>
+        <div class="msg ele r">Bom dia. Ronda feita: 2 propostas implantaram, entrada dada.</div>
+        <div class="msg ele r">A da Marta voltou com pendência: falta comprovante de residência. <b>O aviso pro corretor está pronto, é só copiar.</b></div>
+        <div class="msg eu r">Copiei e mandei.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-fundo="cena:s125" data-section="Agente do Supervisor" data-tag="Confiança" data-title="Captcha: não burla">
+  <div class="glow g-tr"></div>
+  <div class="frame l-stmt">
+    <div class="kicker r">Captcha no portal?</div>
+    <div class="h-xl r">Não burla.</div>
+    <p class="sub r">Marca "não verificado" e te avisa no relatório. <b>Senha, ele nunca vê.</b></p>
+  </div>
+</section>
+
+<section class="slide" data-fundo="cena:s126" data-section="O painel da equipe" data-tag="Para o supervisor" data-title="Ranking dos Campeões">
+  <div class="glow g-tl"></div>
+  <div class="frame l-split">
+    <div class="txt">
+      <div class="kicker r">Supervisor</div>
+      <div class="h-l r">Ranking dos</div>
+      <div class="h-l teal r">Campeões.</div>
+      <p class="sub r">Painel da equipe: quem vendeu quanto no mês e <b>quem precisa de apoio</b>.</p>
+    </div>
+    <div class="vis r"><figure class="shot tall"><img src="assets/ranking-da-equipe-escuro.png" alt="Ranking dos Campeões"></figure></div>
+  </div>
+</section>
+
+<section class="slide" data-section="O painel da equipe" data-title="O elogio é com vocês">
+  <div class="glow g-br"></div>
+  <div class="frame l-stmt center">
+    <div class="h-l r">O painel mede.</div>
+    <div class="h-l teal r">O elogio continua</div>
+    <div class="h-l teal r">com vocês.</div>
+    <p class="sub r">Reconhecimento continua sendo trabalho de supervisor. <b>Não de painel.</b></p>
+  </div>
+</section>
+
+<section class="slide" data-section="Agente do Supervisor" data-tag="Cada um com o seu" data-title="Cada um com o seu agente">
+  <div class="frame l-versus">
+    <div class="vs b r" style="gap:16px;padding:34px 44px">
+      <div class="vs-top">Corretor</div>
+      <div style="font:900 46px/1.05 var(--f-display);letter-spacing:-.03em;color:var(--ink)">Seu Copiloto</div>
+      <ul style="margin:4px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:14px;font:400 28px/1.3 var(--f-body);color:var(--ink)"><li><span style="color:var(--teal);font-weight:800">›</span> Sugere a <b>abordagem</b> para cada lead: primeiro contato, retomada, objeção de preço.</li><li><span style="color:var(--teal);font-weight:800">›</span> Escreve a mensagem pronta para você <b>copiar e colar</b> na conversa do lead.</li><li><span style="color:var(--teal);font-weight:800">›</span> Cota no simulador e te explica carência, coparticipação e rede.</li><li><span style="color:var(--teal);font-weight:800">›</span> Lembra os <b>retornos</b>: de manhã, "o que tem pra hoje?".</li><li><span style="color:var(--teal);font-weight:800">›</span> De presente: o anúncio e o carrossel a partir da tabela.</li></ul>
+    </div>
+    <div class="vs-mid r">+</div>
+    <div class="vs b r" style="gap:16px;padding:34px 44px">
+      <div class="vs-top">Supervisor</div>
+      <div style="font:900 46px/1.05 var(--f-display);letter-spacing:-.03em;color:var(--ink)">Agente do Supervisor</div>
+      <ul style="margin:4px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:14px;font:400 28px/1.3 var(--f-body);color:var(--ink)"><li><span style="color:var(--teal);font-weight:800">›</span> Entra nos portais (Qualicorp, QV, Amil…) <b>com o seu login</b>, todo dia.</li><li><span style="color:var(--teal);font-weight:800">›</span> Confere cada proposta da equipe e <b>compara com ontem</b>.</li><li><span style="color:var(--teal);font-weight:800">›</span> Dá entrada na implantada, <b>do jeito da sua empresa</b>.</li><li><span style="color:var(--teal);font-weight:800">›</span> <b>Cadastra proposta nova</b> e anexa os documentos.</li><li><span style="color:var(--teal);font-weight:800">›</span> Te entrega o <b>resumo às 7h</b>, com o aviso do corretor pronto.</li></ul>
+    </div>
+  </div>
+  <div class="cue r">Cada um com o seu agente. <b>E ninguém mais no F5.</b></div>
+</section>
+
+<!-- ===== 08-cap8-automatico.html ===== -->
+<section class="slide" data-fundo="cena:c8" data-tag="Capítulo 8 de 9" data-station="8/9" data-title="Capítulo 8 — No automático">
+  <div class="glow g-br"></div>
+  <div class="frame l-act">
+    <div class="act-n r">Capítulo 8 de 9</div>
+    <h2 class="act-t r">No<br><span class="teal">automático</span></h2>
+    <div class="act-bar"></div>
+    <p class="sub r">O agente aprende com você, trabalha no horário e obedece pelo celular.</p>
+  </div>
+</section>
+
+<section class="slide" data-fundo="cena:s130" data-tag="Capítulo 8 · No automático" data-title="6 — Skills">
+  <div class="glow g-br"></div>
+  <div class="frame l-act">
+    <div class="act-n r">Capítulo 8 · No automático</div>
+    <h2 class="act-t r">O Claude<br><span class="teal">aprende</span></h2>
+    <div class="act-bar"></div>
+    <p class="sub r">Skills: você mostra uma vez, ele repete.</p>
+  </div>
+</section>
+
+<section class="slide" data-section="O que é skill" data-tag="Ensinar → skill → rotina" data-title="Do ensinar à rotina">
+  <div class="glow g-c"></div>
+  <div class="frame l-flow stack">
+    <div class="step r"><div class="ic-circle sm"><svg class="ic"><use href="#i-eye"/></svg></div><div class="lbl" style="font-size:34px">Faz junto<small style="font-size:22px">você mostra<br>uma vez</small></div></div>
+    <div class="arrow r" style="width:56px;font-size:46px"><svg class="ic"><use href="#i-arrow"/></svg></div>
+    <div class="step r"><div class="ic-circle sm"><svg class="ic"><use href="#i-pencil"/></svg></div><div class="lbl" style="font-size:34px">Ele anota<small style="font-size:22px">o que<br>aprendeu</small></div></div>
+    <div class="arrow r" style="width:56px;font-size:46px"><svg class="ic"><use href="#i-arrow"/></svg></div>
+    <div class="step r"><div class="ic-circle sm"><svg class="ic"><use href="#i-clipboard"/></svg></div><div class="lbl" style="font-size:34px">Vira regra<small style="font-size:22px">ele guarda<br>como regra</small></div></div>
+    <div class="arrow r" style="width:56px;font-size:46px"><svg class="ic"><use href="#i-arrow"/></svg></div>
+    <div class="step r"><div class="ic-circle sm"><svg class="ic"><use href="#i-refresh"/></svg></div><div class="lbl" style="font-size:34px">Você testa<small style="font-size:22px">ele executa<br>várias vezes</small></div></div>
+    <div class="arrow r" style="width:56px;font-size:46px"><svg class="ic"><use href="#i-arrow"/></svg></div>
+    <div class="step r"><div class="ic-circle sm" style="box-shadow:0 0 0 2px var(--teal),0 0 70px rgba(26,188,156,.3)"><svg class="ic"><use href="#i-sparkles"/></svg></div><div class="lbl" style="font-size:34px;color:var(--teal)">Vira skill<small style="font-size:22px">saiu perfeito?<br>"cria uma skill"</small></div></div>
+    <div class="arrow r" style="width:56px;font-size:46px"><svg class="ic"><use href="#i-arrow"/></svg></div>
+    <div class="step r"><div class="ic-circle sm" style="box-shadow:0 0 0 2px var(--teal),0 0 70px rgba(26,188,156,.3)"><svg class="ic"><use href="#i-alarm"/></svg></div><div class="lbl" style="font-size:34px;color:var(--teal)">Rotina<small style="font-size:22px">roda uma ou mais<br>skills no horário</small></div></div>
+  </div>
+</section>
+
+<section class="slide" data-section="Pesquise" data-title="Busca: skill">
+  <div class="glow g-c"></div>
+  <div class="frame l-search">
+    <div class="lupa r pop"><svg class="ic"><use href="#i-search"/></svg></div>
+    <div class="qs">
+      <div class="q-label r">Pesquise agora no YouTube</div>
+      <div class="q-box r">o que são skills no Claude<span class="caret"></span></div>
+      <div class="q-foot r">Explica skill com mais calma do que eu tenho aqui. <b>Eu espero.</b></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-section="Você ensina" data-tag="Memória · projeto · skill" data-title="Você ensina, ele guarda">
+  <div class="glow g-tr"></div>
+  <div class="frame l-split">
+    <div class="txt">
+      <div class="h-xl r">Você ensina.</div>
+      <div class="h-xl teal r">Ele guarda.</div>
+      <p class="sub r"><b>Qualquer um aqui ensina o Claude.</b></p>
+    </div>
+    <div class="vis r"><figure class="shot"><img src="assets/web/claude-memoria.png" alt="Anúncio oficial: Bringing memory to Claude"></figure></div>
+  </div>
+</section>
+
+<section class="slide plain" data-fundo="cena:s135" data-section="Você ensina" data-title="Conhecimento parado evapora">
+  <div class="frame l-stmt center">
+    <div class="h-xl r">Conhecimento</div>
+    <div class="h-xl teal r">evapora.</div>
+    <p class="sub r">Por isso tem uma busca no fim de cada bloco: <b>a gente usa na hora</b>.</p>
+  </div>
+</section>
+
+<section class="slide" data-section="Pesquise" data-title="Busca: memória e projetos">
+  <div class="glow g-c"></div>
+  <div class="frame l-search">
+    <div class="lupa r pop"><svg class="ic"><use href="#i-search"/></svg></div>
+    <div class="qs">
+      <div class="q-label r">Pesquise agora no YouTube</div>
+      <div class="q-box r">memória do Claude como funciona<span class="caret"></span></div>
+      <div class="q-box r">projetos no Claude como usar</div>
+      <div class="q-foot r">Celular na mão. <b>Eu espero.</b></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-fundo="cena:s137" data-tag="Capítulo 8 · No automático" data-title="7 — Conectores">
+  <div class="glow g-br"></div>
+  <div class="frame l-act">
+    <div class="act-n r">Capítulo 8 · No automático</div>
+    <h2 class="act-t r">Conectores:<br><span class="teal">a porta da frente</span></h2>
+    <div class="act-bar"></div>
+    <p class="sub r">Ele ligado direto aos apps que você já usa.</p>
+  </div>
+</section>
+
+<section class="slide" data-fundo="cena:s138" data-section="Conectores" data-tag="O que é" data-title="Conector: a porta da frente">
+  <div class="glow g-tl"></div>
+  <div class="frame l-split rev">
+    <div class="txt">
+      <div class="h-xl r">Conector:</div>
+      <div class="h-xl teal r">liga ele ao app.</div>
+      <p class="sub r">Direto no seu e-mail, na sua agenda, nas suas pastas da nuvem. <b>Sem clicar tela por tela.</b></p>
+    </div>
+    <div class="vis r pop"><div class="ic-circle lg"><svg class="ic"><use href="#i-link"/></svg></div></div>
+  </div>
+  <div class="cue r">O navegador entra pela janela. <b>O conector entra pela porta.</b></div>
+</section>
+
+<section class="slide" data-section="Conectores" data-tag="Exemplos" data-title="Os apps que você já usa">
+  <div class="frame l-mosaic" style="--cols:3;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:1fr 1fr auto;gap:22px">
+    <div class="tile r"><svg class="ic"><use href="#i-mail"/></svg>Gmail · lê o e-mail da operadora</div>
+    <div class="tile r"><svg class="ic"><use href="#i-calendar"/></svg>Agenda · marca o retorno</div>
+    <div class="tile r"><svg class="ic"><use href="#i-folder"/></svg>Drive · acha a tabela vigente</div>
+    <div class="tile r"><svg class="ic"><use href="#i-file"/></svg>Outlook e OneDrive</div>
+    <div class="tile r"><svg class="ic"><use href="#i-image"/></svg>Canva · arte no seu modelo</div>
+    <div class="tile hi r"><svg class="ic"><use href="#i-layers"/></svg>E muitos outros</div>
+    <p class="sub r" style="grid-column:1/-1;margin:4px 0 0">Cada um ligado <b>uma vez, com o seu login</b>.</p>
+  </div>
+  <div class="cue r">E-mail, agenda, nuvem, arte. <b>Liga uma vez e ele usa quando precisar.</b></div>
+</section>
+
+<section class="slide" data-fundo="cena:s140" data-tag="Capítulo 8 · No automático" data-title="8 — Rotinas">
+  <div class="glow g-br"></div>
+  <div class="frame l-act">
+    <div class="act-n r">Capítulo 8 · No automático</div>
+    <h2 class="act-t r">Trabalho<br><span class="teal">com horário</span></h2>
+    <div class="act-bar"></div>
+    <p class="sub r">Rotinas: ele começa sem você pedir.</p>
+  </div>
+</section>
+
+<section class="slide" data-fundo="cena:s141" data-section="Rotinas" data-tag="O que é" data-title="Ensina uma vez, ele repete no horário">
+  <div class="glow g-tl"></div>
+  <div class="frame l-split rev">
+    <div class="txt">
+      <div class="h-xl r" style="font-size:118px">Ensina uma vez.</div>
+      <div class="h-xl teal r" style="font-size:118px">Marca o horário.</div>
+      <p class="sub r">Toda hora, todo dia, só dias úteis ou toda semana. <b>Ele começa sozinho.</b></p>
+    </div>
+    <div class="vis r pop"><div class="ic-circle lg"><svg class="ic"><use href="#i-alarm"/></svg></div></div>
+  </div>
+  <div class="cue r">Ensina uma vez. <b>Ele repete no horário, sem você pedir.</b></div>
+</section>
+
+<section class="slide" data-section="Rotinas" data-tag="Exemplos" data-title="Vira rotina">
+  <div class="frame l-cards">
+    <div class="card hi r"><div class="c-top">Todo dia útil</div><div class="c-big">7h</div><div class="c-sub">pendências da equipe · supervisor</div></div>
+    <div class="card r"><div class="c-top">Todo dia útil</div><div class="c-big">8h</div><div class="c-sub">retornos de hoje e quem sumiu</div></div>
+    <div class="card r"><div class="c-top">Segunda</div><div class="c-big">9h</div><div class="c-sub">ranking da semana no painel</div></div>
+    <div class="card r"><div class="c-top">Sexta</div><div class="c-big">17h</div><div class="c-sub">novidades das operadoras</div></div>
+  </div>
+  <div class="cue r">O que você faz todo dia no mesmo horário <b>vira rotina</b>.</div>
+</section>
+
+<section class="slide" data-fundo="cena:s143" data-tag="Capítulo 8 · No automático" data-title="9 — Controle pelo celular">
+  <div class="glow g-br"></div>
+  <div class="frame l-act">
+    <div class="act-n r">Capítulo 8 · No automático</div>
+    <h2 class="act-t r">Tudo isso<br><span class="teal">pelo celular</span></h2>
+    <div class="act-bar"></div>
+    <p class="sub r">Longe do computador, ele continua trabalhando.</p>
+  </div>
+</section>
+
+<section class="slide" data-fundo="cena:e10" data-section="Pelo celular" data-tag="O que é" data-title="Do celular, você manda">
+  <div class="glow g-tl"></div>
+  <div class="frame l-split rev">
+    <div class="txt">
+      <div class="h-xl r">Do celular,</div>
+      <div class="h-xl teal r">você manda.</div>
+      <p class="sub r">No trânsito, na fila, no plantão. <b>Ele trabalha e te avisa.</b></p>
+    </div>
+    <div class="vis r pop"><div class="ic-circle lg"><svg class="ic"><use href="#i-phone"/></svg></div></div>
+  </div>
+</section>
+
+<section class="slide" data-section="Pelo celular" data-tag="Na prática" data-title="Pede, ele faz, avisa, você aprova">
+  <div class="glow g-tr"></div>
+  <div class="frame l-flow">
+    <div class="step r"><div class="ic-circle"><svg class="ic"><use href="#i-phone"/></svg></div><div class="lbl">Pede<small>no app do Claude,<br>do jeito que fala</small></div></div>
+    <div class="arrow r"><svg class="ic"><use href="#i-arrow"/></svg></div>
+    <div class="step r"><div class="ic-circle"><svg class="ic"><use href="#i-cpu"/></svg></div><div class="lbl">Faz<small>na nuvem ou<br>no seu computador</small></div></div>
+    <div class="arrow r"><svg class="ic"><use href="#i-arrow"/></svg></div>
+    <div class="step r"><div class="ic-circle"><svg class="ic"><use href="#i-bell"/></svg></div><div class="lbl">Avisa<small>pronto, ou<br>"preciso de você"</small></div></div>
+    <div class="arrow r"><svg class="ic"><use href="#i-arrow"/></svg></div>
+    <div class="step r"><div class="ic-circle"><svg class="ic"><use href="#i-check"/></svg></div><div class="lbl">Aprova<small>o seu<br>"pode mandar"</small></div></div>
+  </div>
+  <div class="cue r">O "pode mandar" agora <b>cabe no bolso</b>.</div>
+</section>
+
+<section class="slide" data-section="Pelo celular" data-tag="A condição" data-title="O que precisa do computador ligado">
+  <div class="frame l-versus">
+    <div class="vs a r">
+      <div class="vs-top">Só o celular</div>
+      <div class="one">Conversa, documento, conectores e rotinas.</div>
+    </div>
+    <div class="vs-mid r">×</div>
+    <div class="vs b r">
+      <div class="vs-top">Com o computador ligado</div>
+      <div class="one">A sua <em class="teal" style="font-style:normal">pasta</em> e o seu <em class="teal" style="font-style:normal">Chrome</em>.</div>
+    </div>
+  </div>
+  <div class="cue r">Pasta ou Chrome pelo celular? <b>Deixa o computador ligado e o Claude aberto.</b></div>
+</section>
+
+<section class="slide" data-section="Pesquise" data-title="Busca: Remote Control">
+  <div class="glow g-c"></div>
+  <div class="frame l-search">
+    <div class="lupa r pop"><svg class="ic"><use href="#i-search"/></svg></div>
+    <div class="qs">
+      <div class="q-label r">Pesquise agora no YouTube</div>
+      <div class="q-box r">Claude remote control como usar<span class="caret"></span></div>
+      <div class="q-foot r">A última busca nova da tarde. <b>Eu espero.</b></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 09-cap9-mundo.html ===== -->
+<section class="slide" data-fundo="cena:c9" data-tag="Capítulo 9 de 9" data-station="9/9" data-title="Capítulo 9 — Entre nesse mundo">
+  <div class="glow g-br"></div>
+  <div class="frame l-act">
+    <div class="act-n r">Capítulo 9 de 9</div>
+    <h2 class="act-t r">Entre nesse<br><span class="teal">mundo</span></h2>
+    <div class="act-bar"></div>
+    <p class="sub r">A tarde está acabando. Agora eu quero que vocês <b>fiquem nesse mundo</b>.</p>
+  </div>
+</section>
+
+<section class="slide" data-fundo="cena:s149" data-section="Treine o algoritmo" data-title="Tudo isso, de graça">
+  <div class="glow g-tl"></div>
+  <div class="frame l-stmt">
+    <div class="kicker r">Tudo de hoje já está no YouTube</div>
+    <div class="h-xl r">De graça.</div>
+    <p class="sub r">Mas o YouTube de vocês <b>nunca vai mostrar</b>. Sabem por quê?</p>
+  </div>
+</section>
+
+<section class="slide" data-fundo="cena:e11" data-section="Treine o algoritmo" data-title="Três likes em dancinha">
+  <div class="glow g-tr"></div>
+  <div class="frame l-number">
+    <div class="num r">3</div>
+    <div class="num-label r">likes em dancinha<small>Ontem à noite. O algoritmo anotou.</small></div>
+  </div>
+</section>
+
+<section class="slide plain" data-fundo="cena:s151" data-section="Treine o algoritmo" data-title="O que faz você ficar">
+  <div class="frame l-quote">
+    <p class="q r">O algoritmo não mostra o mundo. Mostra o que faz você <em>ficar</em>.</p>
+    <div class="who r">Desinstale seu Instagram · capítulo 6</div>
+    <p class="sub r">Se ele te mostra fofoca e futebol, <b>não sobra espaço para IA</b>.</p>
+  </div>
+</section>
+
+<section class="slide plain" data-fundo="cena:s155" data-section="Treine o algoritmo" data-title="Ninguém muda por você">
+  <div class="frame l-stmt center">
+    <div class="h-xl r">Ninguém muda</div>
+    <div class="h-xl teal r">por você.</div>
+    <p class="sub r">Nem eu. Nem a New Master. <b>Nem o Claude.</b></p>
+  </div>
+</section>
+
+<section class="slide" data-section="Treine o algoritmo" data-tag="Livro · cap. 12" data-title="Três ações">
+  <div class="glow g-bl"></div>
+  <div class="frame l-flow stack" style="gap:48px">
+    <div class="step r"><div class="ic-circle"><svg class="ic"><use href="#i-search"/></svg></div><div class="lbl">Pesquise de propósito<small>uma busca por dia, até o fim</small></div></div>
+    <div class="step r"><div class="ic-circle"><svg class="ic"><use href="#i-x"/></svg></div><div class="lbl">"Não tenho interesse"<small>nos três pontinhos, sem dó</small></div></div>
+    <div class="step r"><div class="ic-circle"><svg class="ic"><use href="#i-clock"/></svg></div><div class="lbl">Troque a sala de espera<small>fila, Uber, almoço: o que você pesquisou</small></div></div>
+  </div>
+  <div class="cue r">O algoritmo aprende com o que você termina, <b>não com o que você começa</b>.</div>
+</section>
+
+<section class="slide" data-fundo="cena:s156" data-section="Treine o algoritmo" data-title="Dúvida? Vídeo.">
+  <div class="glow g-tr"></div>
+  <div class="frame l-split">
+    <div class="txt">
+      <div class="h-xl r">Dúvida?</div>
+      <div class="h-xl teal r">Vídeo.</div>
+      <p class="sub r">Não me manda <b>áudio de 4 minutos</b>. Alguém já gravou a resposta.</p>
+    </div>
+    <div class="vis"><div class="ic-circle lg r pop"><svg class="ic"><use href="#i-play"/></svg></div></div>
+  </div>
+</section>
+
+<section class="slide" data-fundo="cena:s166" data-section="Treine o algoritmo" data-tag="A contagem" data-title="15 buscas diferentes">
+  <div class="glow g-c"></div>
+  <div class="frame l-number">
+    <div class="num r">15</div>
+    <div class="num-label r">buscas diferentes<small>Amanhã de manhã, o YouTube de vocês vai estar diferente.</small></div>
+  </div>
+</section>
+
+<section class="slide plain" data-fundo="cena:s157" data-section="Fechamento" data-title="Me sigam no Instagram">
+  <div class="frame l-stmt center">
+    <div class="h-m r">Agora sim, o momento de pedir:</div>
+    <div class="h-l teal r pop" style="font-size:100px">@viniciusfaustinoni</div>
+    <p class="sub r">Me sigam no Instagram. <b>Todo palestrante termina assim. Eu também.</b></p>
+  </div>
+</section>
+
+<section class="slide plain" data-fundo="cena:s158" data-section="Fechamento" data-title="Quem responde lá é um agente">
+  <div class="frame l-stmt center">
+    <div class="kicker r">Só um aviso</div>
+    <div class="h-l r" style="font-size:96px">Quem responde lá</div>
+    <div class="h-xl teal r pop" style="font-size:136px">é um agente.</div>
+    <p class="sub r">Resposta minha, de gente, lá não vem. <b>Lembram? Mudei quem abre o aplicativo.</b></p>
+  </div>
+</section>
+
+<section class="slide" data-section="Fechamento" data-title="O livro, grátis">
+  <div class="glow g-tr"></div>
+  <div class="frame l-split rev">
+    <div class="txt">
+      <div class="kicker r">Por que quem abre o meu Instagram é um agente</div>
+      <div class="h-xl r">Grátis.</div>
+      <p class="sub r">Sem cadastro: <b>é só baixar</b>.</p>
+    </div>
+    <div class="vis r"><img src="assets/livro-capa.png" alt="Capa do livro Desinstale seu Instagram" style="height:528px;border-radius:14px;box-shadow:0 30px 80px #000"></div>
+  </div>
+</section>
+
+<section class="slide" data-section="Fechamento" data-tag="Anota" data-title="vinicius.faustinoni.com/palestranewmaster">
+  <div class="glow g-c"></div>
+  <div class="frame l-split">
+    <div class="txt">
+      <div class="kicker r">Tudo de hoje está aqui</div>
+      <div class="h-l r" style="font-size:96px;letter-spacing:-.03em">vinicius.faustinoni.com</div>
+      <div class="h-xl teal r" style="font-size:112px">/palestranewmaster</div>
+      <p class="sub r">Fotografem a tela ou <b>apontem a câmera</b> para o quadrado.</p>
+    </div>
+    <div class="vis r pop"><img src="assets/qr-palestranewmaster.png" alt="QR code da página vinicius.faustinoni.com/palestranewmaster" style="width:400px;height:400px;border-radius:18px;box-shadow:0 30px 80px #000,0 0 60px rgba(26,188,156,.25)"></div>
+  </div>
+</section>
+
+<section class="slide" data-section="Fechamento" data-tag="vinicius.faustinoni.com/palestranewmaster" data-title="Tudo, de graça">
+  <div class="glow g-tl"></div>
+  <div class="frame l-split">
+    <div class="txt">
+      <div class="h-l r">Tudo.</div>
+      <div class="h-l teal r">De graça.</div>
+      <p class="sub r">Os 2 funcionários, o Agente de Imagens,<br>as 15 buscas e o livro.</p>
+    </div>
+    <div class="vis">
+      <img class="r" src="assets/pagina-newmaster-topo.png" alt="A página no computador" style="height:430px;border-radius:14px;border:1.5px solid var(--line);box-shadow:0 30px 80px #000">
+      <img class="r" src="assets/pagina-newmaster-celular-topo.png" alt="A página no celular" style="height:528px;border-radius:22px;border:1.5px solid var(--line);box-shadow:0 30px 80px #000">
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-section="Fechamento" data-tag="Tráfego Para Corretores 2026" data-title="Agora eu vendo">
+  <div class="glow g-tr"></div>
+  <div class="frame l-split" style="gap:70px">
+    <div class="txt">
+      <div class="h-s r" style="font-size:44px;color:var(--muted)">Como sou vendedor…</div>
+      <div class="h-m teal r" style="font-size:66px;margin-top:14px">Essa é a hora que<br>eu vendo pra vocês.</div>
+      <div class="r" style="display:flex;align-items:center;gap:26px;margin-top:34px">
+        <img src="assets/tpc-logo.png" alt="Tráfego Para Corretores" style="height:96px">
+        <div style="font:400 28px/1.3 var(--f-body);color:var(--muted)">O treinamento completo<br>de tráfego pago. <b style="color:var(--ink)">30 aulas. +1000 alunos.</b></div>
+      </div>
+    </div>
+    <div class="vis r" style="display:grid;grid-template-columns:repeat(4,262px);grid-template-rows:1fr 1fr;gap:18px;height:100%;align-items:stretch;justify-items:stretch">
+      <div style="background:linear-gradient(180deg,var(--card-2),var(--card));border:1.5px solid var(--line);border-radius:22px;padding:24px 22px;display:flex;flex-direction:column;gap:12px;min-width:0"><svg class="ic" style="font-size:44px;color:var(--teal)"><use href="#i-sparkles"/></svg><div style="font:800 25px/1.12 var(--f-display);letter-spacing:-.02em;color:var(--ink)">Criativo<br>com IA</div><div style="font:400 21px/1.3 var(--f-body);color:var(--muted)">logo, anúncio e vídeo, sem Canva</div></div>
+      <div style="background:linear-gradient(180deg,var(--card-2),var(--card));border:1.5px solid var(--line);border-radius:22px;padding:24px 22px;display:flex;flex-direction:column;gap:12px;min-width:0"><svg class="ic" style="font-size:44px;color:var(--teal)"><use href="#i-funnel"/></svg><div style="font:800 25px/1.12 var(--f-display);letter-spacing:-.02em;color:var(--ink)">Lead que não é curioso</div><div style="font:400 21px/1.3 var(--f-body);color:var(--muted)">formulário que filtra</div></div>
+      <div style="background:linear-gradient(180deg,var(--card-2),var(--card));border:1.5px solid var(--line);border-radius:22px;padding:24px 22px;display:flex;flex-direction:column;gap:12px;min-width:0"><svg class="ic" style="font-size:44px;color:var(--teal)"><use href="#i-hospital"/></svg><div style="font:800 25px/1.12 var(--f-display);letter-spacing:-.02em;color:var(--ink)">Campanha por hospital</div><div style="font:400 21px/1.3 var(--f-body);color:var(--muted)">o anúncio no bairro certo</div></div>
+      <div style="background:linear-gradient(180deg,var(--card-2),var(--card));border:1.5px solid var(--line);border-radius:22px;padding:24px 22px;display:flex;flex-direction:column;gap:12px;min-width:0"><svg class="ic" style="font-size:44px;color:var(--teal)"><use href="#i-refresh"/></svg><div style="font:800 25px/1.12 var(--f-display);letter-spacing:-.02em;color:var(--ink)">Remarketing e PJ/MEI</div><div style="font:400 21px/1.3 var(--f-body);color:var(--muted)">quem viu, volta</div></div>
+      <div style="background:linear-gradient(180deg,var(--card-2),var(--card));border:1.5px solid var(--line);border-radius:22px;padding:24px 22px;display:flex;flex-direction:column;gap:12px;min-width:0"><svg class="ic" style="font-size:44px;color:var(--teal)"><use href="#i-search"/></svg><div style="font:800 25px/1.12 var(--f-display);letter-spacing:-.02em;color:var(--ink)">Google</div><div style="font:400 21px/1.3 var(--f-body);color:var(--muted)">Perfil da Empresa e Pesquisa</div></div>
+      <div style="background:linear-gradient(180deg,var(--card-2),var(--card));border:1.5px solid var(--line);border-radius:22px;padding:24px 22px;display:flex;flex-direction:column;gap:12px;min-width:0"><svg class="ic" style="font-size:44px;color:var(--teal)"><use href="#i-chat"/></svg><div style="font:800 25px/1.12 var(--f-display);letter-spacing:-.02em;color:var(--ink)">Do lead à venda</div><div style="font:400 21px/1.3 var(--f-body);color:var(--muted)">abordagem e follow-up com IA</div></div>
+      <div style="background:linear-gradient(180deg,var(--card-2),var(--card));border:1.5px solid var(--line);border-radius:22px;padding:24px 22px;display:flex;flex-direction:column;gap:12px;min-width:0"><svg class="ic" style="font-size:44px;color:var(--teal)"><use href="#i-clock"/></svg><div style="font:800 25px/1.12 var(--f-display);letter-spacing:-.02em;color:var(--ink)">10 minutos por dia</div><div style="font:400 21px/1.3 var(--f-body);color:var(--muted)">lead barato × lead que fecha</div></div>
+      <div style="background:linear-gradient(180deg,var(--card-2),var(--card));border:1.5px solid var(--line);border-radius:22px;padding:24px 22px;display:flex;flex-direction:column;gap:12px;min-width:0"><svg class="ic" style="font-size:44px;color:var(--teal)"><use href="#i-shield"/></svg><div style="font:800 25px/1.12 var(--f-display);letter-spacing:-.02em;color:var(--ink)">Objeções e 30 dias</div><div style="font:400 21px/1.3 var(--f-body);color:var(--muted)">a IA responde, o plano está pronto</div></div>
+    </div>
+  </div>
+  <div class="cue r">Meta, Google e IA, do zero. <b>Tutor de IA 24 h e certificado no final.</b></div>
+</section>
+
+<section class="slide" data-section="Fechamento" data-tag="Tráfego Para Corretores 2026" data-title="O preço">
+  <div class="glow g-bl"></div>
+  <div class="frame l-number" style="gap:90px">
+    <div class="r" style="display:flex;flex-direction:column;gap:10px">
+      <div class="strike" style="font:700 64px/1 var(--f-display);letter-spacing:-.03em;color:var(--muted)">De R$ 647</div>
+      <div class="num"><span>R$ 297</span></div>
+    </div>
+    <div class="num-label r">Mas vocês têm<br><span style="color:var(--teal)">cupom de desconto.</span><small>Pagamento único, sem mensalidade. 12 meses de acesso.</small></div>
+  </div>
+  <div class="cue r">Esse é o preço para quem não está aqui. <b>Vocês têm um cupom.</b></div>
+</section>
+
+<section class="slide" data-section="Fechamento" data-tag="Só para quem está aqui" data-title="O cupom">
+  <div class="glow g-tr"></div>
+  <div class="frame l-split" style="gap:80px">
+    <div class="txt">
+      <div class="kicker r">Cupom</div>
+      <div class="r" style="border:3px dashed var(--teal);border-radius:28px;padding:34px 52px;width:fit-content;background:var(--teal-dim)">
+        <div style="font:700 88px/1 var(--f-mono);letter-spacing:.04em;color:var(--teal)">DESCONTOTOTAL</div>
+      </div>
+      <p class="sub r">Em <span style="font-family:var(--f-mono);color:var(--teal)">tpc.faustinoni.com</span>, no pagamento: <b>o desconto é total.</b></p>
+    </div>
+    <div class="vis r" style="flex-direction:column;align-items:flex-start;gap:8px">
+      <div class="strike" style="font:700 56px/1 var(--f-display);letter-spacing:-.03em;color:var(--muted)">R$ 297</div>
+      <div style="font:900 200px/.9 var(--f-display);letter-spacing:-.06em;color:var(--teal);white-space:nowrap">R$ 0</div>
+      <div style="font:700 44px/1.15 var(--f-display);letter-spacing:-.02em;color:var(--ink);margin-top:14px">o treinamento inteiro</div>
+    </div>
+  </div>
+  <div class="cue r">Para quem está aqui hoje: <b>o treinamento sai de graça.</b></div>
+</section>
+
+<section class="slide" data-fundo="cena:s165" data-section="Fechamento" data-title="Começar">
+  <div class="glow g-br"></div>
+  <div class="frame l-stmt">
+    <div class="h-xxl r">Começar.</div>
+    <p class="sub r">A única coisa que <b>ninguém faz por vocês</b>.</p>
+  </div>
+</section>
+
+<section class="slide" data-section="Fechamento" data-title="Um computador e R$ 110">
+  <div class="glow g-tr"></div>
+  <div class="frame l-split">
+    <div class="txt">
+      <div class="kicker r">Vocês começam amanhã com</div>
+      <div class="h-l r">Um computador.</div>
+      <div class="h-l teal r">E R$ 110.</div>
+      <p class="sub r">Os agentes e o treinamento, vocês já levam. <b>O resto é começar.</b></p>
+    </div>
+    <div class="vis r pop"><div class="ic-circle lg"><svg class="ic"><use href="#i-zap"/></svg></div></div>
+  </div>
+</section>
+
+<section class="slide" data-fundo="cena:s29" data-section="Fechamento" data-title="Eu tenho tempo. Pode falar.">
+  <div class="glow g-bl"></div>
+  <div class="frame l-split">
+    <div class="txt">
+      <p class="sub r" style="margin:0 0 26px">Travou? Pesquisa. Travou de novo? Pergunta ao Claude. <b>Ainda travou?</b></p>
+      <div class="h-l r">Eu tenho tempo.</div>
+      <div class="h-xl teal r">Pode falar.</div>
+    </div>
+    <div class="vis r"><img class="photo" src="assets/vinicius-terno-busto.jpg" alt="Vinícius Faustinoni"></div>
+  </div>
+</section>
+
+</div></div>
+
+<div class="progress"></div>
+<div class="blackout"></div>
+<div class="goto"></div>
+<div class="help">
+  <b>→ Espaço PageDown</b> avança · <b>← PageUp</b> volta<br>
+  <b>número + Enter</b> vai para o slide · <b>Home/End</b> início/fim<br>
+  <b>B</b> ou <b>.</b> tela preta · <b>F</b> tela cheia<br>
+  <b>P</b> modo apresentador (notas, próximo slide, cronômetro)<br>
+  <b>?</b> mostra/esconde esta ajuda
+</div>
+
+<!-- Modo apresentador (só aparece na janela aberta com P) -->
+<div class="pv">
+  <div class="pv-cur"><div class="pv-mini" id="pvCur"></div></div>
+  <div class="pv-title" id="pvTitle"></div>
+  <div class="pv-side">
+    <div class="pv-clock" id="pvTimer">00:00:00</div>
+    <div class="pv-meta" id="pvMeta"></div>
+    <div class="pv-meta">Próximo:</div>
+    <div class="pv-next"><div class="pv-mini" id="pvNext"></div></div>
+    <div class="pv-meta"><b>R</b> zera o cronômetro · setas navegam</div>
+  </div>
+  <div class="pv-notes" id="pvNotes"></div>
+</div>
+
+<script>
+/* ===========================================================
+   CONFIGURAÇÃO — lado da seta do .l-wall ('left' ou 'right')
+   =========================================================== */
+const DECK={ wallSide:'left', W:2304, H:768 };
+document.body.classList.remove('wall-left','wall-right');
+document.body.classList.add('wall-'+DECK.wallSide);
+
+const PRESENTER=new URLSearchParams(location.search).has('presenter');
+const stage=document.querySelector('.deck-stage');
+const slides=[...document.querySelectorAll('.deck-stage > .slide')];
+const chan=('BroadcastChannel' in window)?new BroadcastChannel('ia-de-verdade'):null;
+let cur=0;
+
+/* ===========================================================
+   PREPARO DOS SLIDES — cromo, trilho, busca nº, atrasos de entrada
+   =========================================================== */
+let busca=0;
+slides.forEach((s,idx)=>{
+  s.dataset.n=idx+1;
+  if(s.dataset.section&&!s.querySelector('.chrome.tl')){const c=document.createElement('div');c.className='chrome tl';c.innerHTML=s.dataset.section;s.appendChild(c)}
+  if(s.dataset.tag&&!s.querySelector('.chrome.tr')){const c=document.createElement('div');c.className='chrome tr';c.innerHTML=s.dataset.tag;s.appendChild(c)}
+  if(s.dataset.station){const[a,b]=s.dataset.station.split('/').map(Number);const t=document.createElement('div');t.className='track';for(let k=1;k<=b;k++){const i=document.createElement('i');if(k<a)i.className='past';if(k===a)i.className='on';t.appendChild(i)}s.appendChild(t)}
+  /* conta as buscas (cada .q-box é uma busca; .q-box.again = repetida, não conta) */
+  if(s.querySelector('.l-search')){const nq=s.querySelectorAll('.q-box:not(.again)').length;if(nq){const a=busca+1;busca+=nq;const pad=v=>String(v).padStart(2,'0');const lbl=nq>1?'Buscas <b>'+pad(a)+'–'+pad(busca)+'</b>':'Busca <b>'+pad(a)+'</b>';s.querySelectorAll('.busca-n').forEach(e=>e.textContent=pad(busca));if(!s.querySelector('.chrome.tr')){const c=document.createElement('div');c.className='chrome tr';c.innerHTML=lbl;s.appendChild(c)}}}
+  [...s.querySelectorAll('.r')].forEach((e,k)=>{if(!e.style.getPropertyValue('--d'))e.style.setProperty('--d',(0.08+k*0.14).toFixed(2)+'s')});
+});
+
+/* ===========================================================
+   FUNDO DE VÍDEO — camada única atrás dos slides (23/10)
+   ida para um slide com filme: toca o filme; volta de um slide com filme: toca o filme ao contrário;
+   cena: toca do começo na ida e fica parada no último quadro; volta ou salto (número + Enter): mostra o último quadro (o .jpg),
+   sem pular o vídeo para o fim (pular depende do servidor aceitar Range, e o servidor local não aceita).
+   Sem o vídeo (ex.: navegador sem H.264), mostra a imagem parada.
+   =========================================================== */
+const fundoDeck=document.createElement('div');fundoDeck.className='fundo-deck';
+const fVid=[0,1].map(()=>{const v=document.createElement('video');v.muted=true;v.playsInline=true;v.preload='auto';fundoDeck.appendChild(v);return v});
+const fImg=document.createElement('img');fImg.alt='';fundoDeck.appendChild(fImg);
+const fPre=document.createElement('video');fPre.muted=true;fPre.preload='auto';
+stage.insertBefore(fundoDeck,stage.firstChild);
+let fVez=0,fPedido=0;
+function fundoDe(s){const f=s&&s.dataset.fundo;if(!f)return null;const[tipo,nome]=f.split(':');const b='assets/cenas/'+nome;return{tipo,mp4:b+'.mp4',re:b+'-re.mp4',jpg:b+'.jpg'}}
+const fPosters=[]; // carrega as imagens paradas já na abertura: servem de reserva no telão e no PDF (sem isso o PDF sai antes delas)
+slides.forEach(s=>{const f=fundoDe(s);if(!f)return;s.style.setProperty('--poster',`url("${f.jpg}")`);const im=new Image();im.src=f.jpg;fPosters.push(im)});
+function fundoImagem(src){++fPedido;fImg.src=src;fImg.classList.add('on');fVid.forEach(v=>v.classList.remove('on'))}
+function fundoSome(){++fPedido;fImg.classList.remove('on');fVid.forEach(v=>{v.classList.remove('on')})}
+function fundoToca(src,poster,vel){
+  const pedido=++fPedido;const v=fVid[fVez=1-fVez],velho=fVid[1-fVez];
+  const mostra=()=>{if(pedido!==fPedido)return;v.classList.add('on');velho.classList.remove('on');fImg.classList.remove('on');setTimeout(()=>{if(!velho.classList.contains('on'))velho.pause()},700)};
+  v.onerror=()=>{if(pedido===fPedido&&poster)fundoImagem(poster)};
+  const vai=()=>{if(pedido!==fPedido)return;v.currentTime=0;v.defaultPlaybackRate=v.playbackRate=vel||1;v.play().then(mostra,()=>{if(pedido===fPedido&&poster)fundoImagem(poster)})};
+  if(v.getAttribute('src')!==src){v.src=src;v.addEventListener('loadeddata',vai,{once:true});v.load()}else if(v.readyState>=2)vai();else v.addEventListener('loadeddata',vai,{once:true});
+}
+function fundoPara(de,para){
+  if(PRESENTER)return;
+  const a=fundoDe(slides[para]),b=de==null?null:fundoDe(slides[de]);
+  // velocidade (25/10, pedido dele: transições do começo mais rápidas): filme 1,8x; o slide pode mandar a sua em data-vel
+  const vel=s=>parseFloat(s.dataset.vel)||(fundoDe(s)&&fundoDe(s).tipo==='filme'?1.8:1);
+  if(de!=null&&para===de-1&&b&&b.tipo==='filme'){fundoToca(b.re,a?a.jpg:null,vel(slides[de]));return}
+  if(!a){fundoSome();return}
+  if(a.tipo==='imagem'){fundoImagem(a.jpg);return}
+  if(de!=null&&para===de+1)fundoToca(a.mp4,a.jpg,vel(slides[para]));else fundoImagem(a.jpg);
+  const prox=fundoDe(slides[para+1]);if(prox&&prox.tipo!=='imagem'&&fPre.getAttribute('src')!==prox.mp4){fPre.src=prox.mp4;fPre.load()}
+}
+
+/* ===========================================================
+   MOTION GRAPHICS (23/10)
+   Partículas verde-água atrás dos slides (o teste A do laboratório): no slide que tem UM ícone grande
+   (.ic-circle sem .sm) elas desenham esse ícone no lugar dele; nos outros viram poeira fina de fundo;
+   nos slides com vídeo somem. A cada troca giram e montam o desenho seguinte.
+   Números de 10 para cima nos títulos contam do zero. Ícones de traço se desenham (CSS @keyframes traca).
+   =========================================================== */
+const MG_N=2200;
+const mgCanvas=document.createElement('canvas');mgCanvas.className='mg-canvas';mgCanvas.width=DECK.W;mgCanvas.height=DECK.H;
+stage.insertBefore(mgCanvas,fundoDeck.nextSibling);
+const mgCtx=mgCanvas.getContext('2d');
+const mgP=Array.from({length:MG_N},()=>{const px=Math.random()*DECK.W,py=Math.random()*DECK.H;
+  return{x:px,y:py,px,py,sx:px,sy:py,tx:px,ty:py,d:Math.random()*.35,fase:Math.random()*6.28,tam:.8+Math.random()*1.8,poeira:Math.random()<.12}});
+const mgSvg=document.createElementNS('http://www.w3.org/2000/svg','svg');mgSvg.setAttribute('viewBox','0 0 24 24');
+mgSvg.style.cssText='position:absolute;left:-200px;top:0;width:24px;height:24px;visibility:hidden';document.body.appendChild(mgSvg);
+const mgFormas={};
+function mgPontos(nome){
+  if(mgFormas[nome])return mgFormas[nome];
+  const sym=document.getElementById(nome);mgSvg.innerHTML=sym?sym.innerHTML:'<circle cx="12" cy="12" r="9"/>';
+  const geo=[...mgSvg.querySelectorAll('path,rect,circle,ellipse,line,polyline,polygon')];
+  const comp=geo.map(g=>{try{return g.getTotalLength()}catch(e){return 0}}),total=comp.reduce((a,b)=>a+b,0)||1;
+  const pts=[];
+  geo.forEach((g,k)=>{const n=Math.round(MG_N*comp[k]/total);for(let j=0;j<n;j++){const p=g.getPointAtLength(Math.random()*comp[k]);
+    pts.push([p.x-12+(Math.random()-.5)*.5,p.y-12+(Math.random()-.5)*.5])}});
+  if(!pts.length)pts.push([0,0]);
+  while(pts.length<MG_N)pts.push(pts[Math.floor(Math.random()*pts.length)]);
+  for(let i=pts.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pts[i],pts[j]]=[pts[j],pts[i]]}
+  return(mgFormas[nome]=pts.slice(0,MG_N));
+}
+function mgIcone(s){const ics=s.dataset.fundo?[]:[...s.querySelectorAll('.ic-circle:not(.sm)')];return ics.length===1&&ics[0].querySelector('use')?ics[0]:null}
+if(!PRESENTER)slides.forEach(s=>{const ic=mgIcone(s);if(ic)ic.classList.add('mg-ic')});
+let mgTr=null,mgCx=DECK.W*.75,mgCy=DECK.H/2,mgInt=.3,mgIntAlvo=.3;
+function mgPara(n,instantaneo){
+  if(PRESENTER)return;
+  const s=slides[n],ic=mgIcone(s);
+  mgCanvas.classList.toggle('off',!!s.dataset.fundo);
+  let pts=null,esc=0;
+  if(ic){
+    const sr=stage.getBoundingClientRect(),r=ic.getBoundingClientRect(),k=sr.width/DECK.W;
+    mgCx=(r.left+r.width/2-sr.left)/k;mgCy=(r.top+r.height/2-sr.top)/k;
+    esc=ic.offsetWidth*1.65/24;pts=mgPontos(ic.querySelector('use').getAttribute('href').slice(1));
+  }
+  mgIntAlvo=ic?1:.3;
+  mgP.forEach((p,k)=>{p.sx=p.x;p.sy=p.y;
+    if(ic&&!p.poeira){p.tx=mgCx+pts[k][0]*esc;p.ty=mgCy+pts[k][1]*esc}
+    else if(ic){p.tx=mgCx+(Math.random()-.5)*esc*46;p.ty=mgCy+(Math.random()-.5)*esc*26}
+    else{p.tx=p.px;p.ty=p.py}
+    if(instantaneo){p.x=p.tx;p.y=p.ty}});
+  mgTr=instantaneo?null:{t0:performance.now(),dur:1750,giro:(Math.random()<.5?-1:1)*(1.1+Math.random()*.6),cx:mgCx,cy:mgCy};
+}
+const mgEase=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+function mgQuadro(agora){
+  requestAnimationFrame(mgQuadro);
+  mgInt+=(mgIntAlvo-mgInt)*.04;
+  mgCtx.clearRect(0,0,DECK.W,DECK.H);
+  if(mgIntAlvo>.5||mgInt>.5){const g=mgCtx.createRadialGradient(mgCx,mgCy,0,mgCx,mgCy,520);
+    g.addColorStop(0,`rgba(26,188,156,${.13*mgInt})`);g.addColorStop(1,'rgba(26,188,156,0)');mgCtx.fillStyle=g;mgCtx.fillRect(0,0,DECK.W,DECK.H)}
+  mgCtx.globalCompositeOperation='lighter';
+  let energia=0;const t=agora/1000;
+  for(const p of mgP){
+    let x=p.tx,y=p.ty;
+    if(mgTr){
+      const e=mgEase(Math.min(1,Math.max(0,((agora-mgTr.t0)/mgTr.dur-p.d)/.65))),arco=Math.sin(Math.PI*e);
+      energia=Math.max(energia,arco);
+      const mx=p.sx+(p.tx-p.sx)*e-mgTr.cx,my=p.sy+(p.ty-p.sy)*e-mgTr.cy,ang=mgTr.giro*arco,r=1+.55*arco;
+      x=mgTr.cx+(mx*Math.cos(ang)-my*Math.sin(ang))*r;y=mgTr.cy+(mx*Math.sin(ang)+my*Math.cos(ang))*r;
+    }
+    const solto=p.poeira||mgIntAlvo<.5;
+    x+=Math.sin(t*1.3+p.fase)*(solto?9:1.6);y+=Math.cos(t*1.1+p.fase)*(solto?7:1.6);
+    p.x=x;p.y=y;
+    const a=(p.poeira?.22:.55+.35*Math.sin(t*2+p.fase))*(p.poeira?1:mgInt);
+    mgCtx.fillStyle=`rgba(72,214,184,${a*.25})`;mgCtx.fillRect(x-p.tam*2,y-p.tam*2,p.tam*4,p.tam*4);
+    mgCtx.fillStyle=`rgba(${energia>.3&&p.tam>2.2?'235,255,250':'72,214,184'},${a})`;mgCtx.fillRect(x-p.tam/2,y-p.tam/2,p.tam,p.tam);
+  }
+  mgCtx.globalCompositeOperation='source-over';
+  if(mgTr&&agora-mgTr.t0>mgTr.dur+50)mgTr=null;
+}
+if(!PRESENTER)requestAnimationFrame(mgQuadro);
+/* números que contam: o número fica numa caixa com a largura final, para a linha não sacudir */
+let mgVez=0;
+function mgConta(s){
+  if(PRESENTER)return;
+  const vez=++mgVez;
+  s.querySelectorAll('.num,.h-xxl,.h-xl,.h-l').forEach(el=>{
+    if(!el.dataset.mgTxt){if(el.children.length)return;el.dataset.mgTxt=el.textContent}
+    const txt=el.dataset.mgTxt;
+    const m=txt.match(/^(\D*?)(\d{1,3}(?:\.\d{3})+|\d+)(\D*)$/);if(!m)return;
+    const alvo=parseInt(m[2].replace(/\./g,''),10);if(alvo<10)return;
+    const fmt=v=>m[2].includes('.')?v.toLocaleString('pt-BR'):String(v);
+    el.textContent='';el.append(m[1]);const sp=document.createElement('span');sp.className='mg-num';sp.textContent=m[2];el.append(sp,m[3]);
+    sp.style.minWidth=sp.getBoundingClientRect().width/(stage.getBoundingClientRect().width/DECK.W)+'px';
+    const atraso=(parseFloat(getComputedStyle(el).getPropertyValue('--d'))||0)*1000+(s.dataset.fundo&&s.dataset.fundo.startsWith('filme')?1500:0)+150;
+    const t0=performance.now()+atraso,dur=1300;sp.textContent=fmt(0);
+    const passo=agora=>{if(vez!==mgVez){el.textContent=txt;return}
+      const k=Math.min(1,Math.max(0,(agora-t0)/dur)),e=1-Math.pow(1-k,3);
+      sp.textContent=fmt(Math.round(alvo*e));if(k<1)requestAnimationFrame(passo);else el.textContent=txt};
+    requestAnimationFrame(passo);
+  });
+}
+
+/* ===========================================================
+   ESCALA O PALCO PARA A JANELA
+   =========================================================== */
+function fit(){const s=Math.min(innerWidth/DECK.W,innerHeight/DECK.H);stage.style.transform=`translate(${(innerWidth-DECK.W*s)/2}px,${(innerHeight-DECK.H*s)/2}px) scale(${s})`;if(PRESENTER)fitPresenter()}
+addEventListener('resize',fit);
+
+/* ===========================================================
+   NAVEGAÇÃO
+   =========================================================== */
+function show(n,fromRemote){
+  n=Math.max(0,Math.min(slides.length-1,n));
+  const de=cur;
+  slides[cur].classList.remove('active');cur=n;slides[cur].classList.add('active');
+  if(de!==n||fromRemote===true){fundoPara(de===n?null:de,n);mgPara(n,de===n);mgConta(slides[n])}
+  document.querySelector('.progress').style.width=((cur+1)/slides.length*100)+'%';
+  if(!PRESENTER)history.replaceState(null,'','#'+(cur+1));
+  if(PRESENTER)renderPresenter();
+  if(chan&&!fromRemote)chan.postMessage({type:'go',n:cur});
+}
+let typed='';const gotoEl=document.querySelector('.goto');
+addEventListener('keydown',e=>{
+  const k=e.key;
+  if(/^[0-9]$/.test(k)){typed+=k;gotoEl.style.display='block';gotoEl.textContent='ir para '+typed;return}
+  if(k==='Enter'&&typed){show(parseInt(typed,10)-1);typed='';gotoEl.style.display='none';return}
+  if(k==='Escape'){typed='';gotoEl.style.display='none';document.body.classList.remove('show-help');return}
+  if(['ArrowRight','ArrowDown',' ','PageDown','Enter'].includes(k)){e.preventDefault();show(cur+1)}
+  else if(['ArrowLeft','ArrowUp','PageUp','Backspace'].includes(k)){e.preventDefault();show(cur-1)}
+  else if(k==='Home')show(0);else if(k==='End')show(slides.length-1);
+  else if(k==='b'||k==='B'||k==='.'){document.body.classList.toggle('black');chan&&chan.postMessage({type:'black',on:document.body.classList.contains('black')})}
+  else if(k==='f'||k==='F'){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen?.()}
+  else if(k==='p'||k==='P'){if(!PRESENTER)window.open(location.pathname+'?presenter#'+(cur+1),'apresentador','width=1400,height=900')}
+  else if(k==='?')document.body.classList.toggle('show-help');
+  else if((k==='r'||k==='R')&&PRESENTER){t0=Date.now()}
+});
+if(!PRESENTER)addEventListener('click',e=>{if(!e.target.closest('a'))show(cur+1)});
+/* celular (24/10): deslizar o dedo para a esquerda avança, para a direita volta (o toque simples continua avançando) */
+let toqueX=null;
+if(!PRESENTER){addEventListener('touchstart',e=>{toqueX=e.touches[0].clientX},{passive:true});
+  addEventListener('touchend',e=>{if(toqueX==null)return;const dx=e.changedTouches[0].clientX-toqueX;toqueX=null;if(Math.abs(dx)>50)show(cur+(dx<0?1:-1))},{passive:true})}
+if(chan)chan.onmessage=m=>{const d=m.data;if(d.type==='go'&&d.n!==cur)show(d.n,true);if(d.type==='black')document.body.classList.toggle('black',d.on);if(d.type==='hello'&&!PRESENTER)chan.postMessage({type:'go',n:cur})};
+
+/* ===========================================================
+   MODO APRESENTADOR — notas, próximo slide, cronômetro
+   =========================================================== */
+let t0=Date.now();
+function fitPresenter(){
+  [['pvCur','.pv-cur'],['pvNext','.pv-next']].forEach(([id,box])=>{const b=document.querySelector(box);const s=b.clientWidth/DECK.W;b.style.height=(DECK.H*s)+'px';document.getElementById(id).style.transform=`scale(${s})`});
+}
+function renderPresenter(){
+  const c=document.getElementById('pvCur'),nx=document.getElementById('pvNext');
+  c.innerHTML=slides[cur].outerHTML;c.firstElementChild.classList.add('active');
+  nx.innerHTML=slides[cur+1]?slides[cur+1].outerHTML:'';if(nx.firstElementChild)nx.firstElementChild.classList.add('active');
+  const notes=slides[cur].querySelector('.notes');
+  document.getElementById('pvNotes').innerHTML=notes?notes.innerHTML:'<span style="color:#7C8784">(sem notas)</span>';
+  document.getElementById('pvTitle').textContent=(slides[cur].dataset.section||'').replace(/<[^>]+>/g,'')+(slides[cur].dataset.title?' — '+slides[cur].dataset.title:'');
+  document.getElementById('pvMeta').innerHTML='Slide <b>'+(cur+1)+'</b> de '+slides.length;
+  fitPresenter();
+}
+if(PRESENTER){
+  document.body.classList.add('presenter');
+  setInterval(()=>{const s=Math.floor((Date.now()-t0)/1000);document.getElementById('pvTimer').textContent=[s/3600|0,(s/60|0)%60,s%60].map(v=>String(v).padStart(2,'0')).join(':')},500);
+  chan&&chan.postMessage({type:'hello'});
+}
+
+/* Início: respeita #n na URL (retomar de onde parou) */
+fit();
+const h=parseInt(location.hash.slice(1),10);
+slides[0].classList.add('active');show(h>0?h-1:0,true);
+</script>
+</body>
+</html>
