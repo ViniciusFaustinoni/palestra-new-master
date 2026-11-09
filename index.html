@@ -2431,6 +2431,22 @@ body.presenter .pv{display:grid;grid-template-columns:1fr 520px;grid-template-ro
   <div class="cue r">Na primeira vez, ele pergunta. <b>Depois, ele já sabe.</b></div>
 </section>
 
+<section class="slide" data-section="Um agente por assunto" data-tag="Aula · 2 min 36" data-title="Aula: o supervisor cria o agente">
+  <div class="glow g-tr"></div>
+  <div class="frame l-split" style="gap:56px">
+    <div class="txt">
+      <div class="kicker r">Aula de verdade</div>
+      <div class="h-l r">O primeiro</div>
+      <div class="h-l teal r">agente.</div>
+      <p class="sub r">Diz quem ele é, ensina a tarefa uma vez <b>e ele faz sozinho no portal.</b></p>
+    </div>
+    <div class="vis r">
+      <video class="aula-video" src="assets/video/aula-agente-supervisor.mp4" poster="assets/video/aula-agente-supervisor.jpg" controls preload="metadata" playsinline style="display:block;width:1000px;height:auto;border-radius:18px;border:1.5px solid var(--teal);box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 60px rgba(26,188,156,.25);background:#000"></video>
+    </div>
+  </div>
+  <div class="cue r">Do zero ao primeiro agente. <b>Sem programar nada.</b></div>
+</section>
+
 <section class="slide" data-section="Um agente por assunto" data-tag="O gerente" data-title="O gerente de sessões">
   <div class="glow g-c"></div>
   <div class="frame l-flow stack">
@@ -2673,6 +2689,7 @@ body.presenter .pv{display:grid;grid-template-columns:1fr 520px;grid-template-ro
   <b>número + Enter</b> vai para o slide · <b>Home/End</b> início/fim<br>
   <b>B</b> ou <b>.</b> tela preta · <b>F</b> tela cheia<br>
   <b>P</b> modo apresentador (notas, próximo slide, cronômetro)<br>
+  <b>V</b> toca/pausa o vídeo do slide (clicar no vídeo também)<br>
   <b>?</b> mostra/esconde esta ajuda
 </div>
 
@@ -2867,7 +2884,9 @@ addEventListener('resize',fit);
 function show(n,fromRemote){
   n=Math.max(0,Math.min(slides.length-1,n));
   const de=cur;
-  slides[cur].classList.remove('active');cur=n;slides[cur].classList.add('active');
+  slides[cur].classList.remove('active');
+  if(de!==n)slides[de].querySelectorAll('video.aula-video').forEach(v=>v.pause()); /* vídeo de aula (09/11): saiu do slide, pausa */
+  cur=n;slides[cur].classList.add('active');
   if(de!==n||fromRemote===true){fundoPara(de===n?null:de,n);mgPara(n,de===n);mgConta(slides[n])}
   document.querySelector('.progress').style.width=((cur+1)/slides.length*100)+'%';
   if(!PRESENTER)history.replaceState(null,'','#'+(cur+1));
@@ -2888,13 +2907,16 @@ addEventListener('keydown',e=>{
   else if(k==='p'||k==='P'){if(!PRESENTER)window.open(location.pathname+'?presenter#'+(cur+1),'apresentador','width=1400,height=900')}
   else if(k==='?')document.body.classList.toggle('show-help');
   else if((k==='r'||k==='R')&&PRESENTER){t0=Date.now()}
+  else if(k==='v'||k==='V'){if(PRESENTER){chan&&chan.postMessage({type:'video'})}else tocaVideo()}
 });
-if(!PRESENTER)addEventListener('click',e=>{if(!e.target.closest('a'))show(cur+1)});
+/* vídeo de aula (09/11): V ou clique no vídeo toca/pausa; o clique no vídeo não avança o slide */
+function tocaVideo(){const v=slides[cur].querySelector('video.aula-video');if(!v)return;if(v.paused)v.play();else v.pause()}
+if(!PRESENTER)addEventListener('click',e=>{if(!e.target.closest('a,video'))show(cur+1)});
 /* celular (24/10): deslizar o dedo para a esquerda avança, para a direita volta (o toque simples continua avançando) */
 let toqueX=null;
 if(!PRESENTER){addEventListener('touchstart',e=>{toqueX=e.touches[0].clientX},{passive:true});
   addEventListener('touchend',e=>{if(toqueX==null)return;const dx=e.changedTouches[0].clientX-toqueX;toqueX=null;if(Math.abs(dx)>50)show(cur+(dx<0?1:-1))},{passive:true})}
-if(chan)chan.onmessage=m=>{const d=m.data;if(d.type==='go'&&d.n!==cur)show(d.n,true);if(d.type==='black')document.body.classList.toggle('black',d.on);if(d.type==='hello'&&!PRESENTER)chan.postMessage({type:'go',n:cur})};
+if(chan)chan.onmessage=m=>{const d=m.data;if(d.type==='go'&&d.n!==cur)show(d.n,true);if(d.type==='black')document.body.classList.toggle('black',d.on);if(d.type==='hello'&&!PRESENTER)chan.postMessage({type:'go',n:cur});if(d.type==='video'&&!PRESENTER)tocaVideo()};
 
 /* ===========================================================
    MODO APRESENTADOR — notas, próximo slide, cronômetro
